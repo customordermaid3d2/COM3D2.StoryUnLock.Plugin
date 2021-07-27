@@ -1,22 +1,26 @@
-# ! °æ°í !  
+
+
+# ! ê²½ê³  !  
   
-ÀÌ ÇÃ·¯±×ÀÎ »ç¿ë½Ã ³ªÅ¸³ª´Â ½ºÅä¸® ²¿ÀÓµî ÇÃ·¹ÀÌ ¿À·ù »óÈ²¿¡ ´ëÇØ¼± Ã¥ÀÓÁöÁö ¾Ê½À´Ï´Ù.  
+ì´ í”ŒëŸ¬ê·¸ì¸ ì‚¬ìš©ì‹œ ë‚˜íƒ€ë‚˜ëŠ” ìŠ¤í† ë¦¬ ê¼¬ìž„ë“± í”Œë ˆì´ ì˜¤ë¥˜ ìƒí™©ì— ëŒ€í•´ì„  ì±…ìž„ì§€ì§€ ì•ŠìŠµë‹ˆë‹¤.  
   
-´Ü¼øÈ÷ ÄÚµå¸¸ Âü°íÇØ¼­ °­Á¦ ÇØÁ¦¸¦ ÇÏ±â¶§¹®¿¡  
-½ºÅ©¸³Æ®·Î Ã³¸®µÇ´Â ÇÃ·¹±× °ª¿¡ ´ëÇØ¼± Ç®Áö ¸øÇÕ´Ï´Ù.  
-(¿¹¸¦µé¾î 3ÀÏµ¿¾È ¸ÞÀÌµå °í¿ëÇØ¾ßÇÑ´Ù´ø°¡ ÇÏ´Â°Íµé)  
+ë‹¨ìˆœížˆ ì½”ë“œë§Œ ì°¸ê³ í•´ì„œ ê°•ì œ í•´ì œë¥¼ í•˜ê¸°ë•Œë¬¸ì—  
+ìŠ¤í¬ë¦½íŠ¸ë¡œ ì²˜ë¦¬ë˜ëŠ” í”Œë ˆê·¸ ê°’ì— ëŒ€í•´ì„  í’€ì§€ ëª»í•©ë‹ˆë‹¤.  
+(ì˜ˆë¥¼ë“¤ì–´ 3ì¼ë™ì•ˆ ë©”ì´ë“œ ê³ ìš©í•´ì•¼í•œë‹¤ë˜ê°€ í•˜ëŠ”ê²ƒë“¤)  
   
-½Å±Ô ¸ÞÀÌµå »ý¼º½Ã Àü¼Ó,ÇÁ¸®(Exclusive,Free)¸¦ ¼³Á¤ÇÏÁö ¸¶¼¼¿ä.  
-ÇØ´ç ±â´É ¼³Á¤ÈÄ Æ¯Á¤ ÇÃ·¹±× Ã³¸®ÇÏ´Â ¹æ¹ýÀ» ¸øªO¾Ò½À´Ï´Ù.  
-ÇØº¸°í½Í´Ù¸é ¸»¸®Áø ¾Ê½À´Ï´Ù.  
+ì‹ ê·œ ë©”ì´ë“œ ìƒì„±ì‹œ ì „ì†,í”„ë¦¬(Exclusive,Free)ë¥¼ ì„¤ì •í•˜ì§€ ë§ˆì„¸ìš”.  
+í•´ë‹¹ ê¸°ëŠ¥ ì„¤ì •í›„ íŠ¹ì • í”Œë ˆê·¸ ì²˜ë¦¬í•˜ëŠ” ë°©ë²•ì„ ëª»Oì•˜ìŠµë‹ˆë‹¤.  
+í•´ë³´ê³ ì‹¶ë‹¤ë©´ ë§ë¦¬ì§„ ì•ŠìŠµë‹ˆë‹¤.  
   
 
-# ¼³Ä¡ À§Ä¡
+# ì„¤ì¹˜ ìœ„ì¹˜
 
 COM3D2\BepInEx\plugins
 
+![2021-07-27 10 27 09](https://user-images.githubusercontent.com/20321215/127080301-252657e7-dc6d-48d5-a4f4-0e01dddd6736.png)
 
-# ÇÊ¿äÇÑ°Å
+
+# í•„ìš”í•œê±°
 
 - BepInEx https://github.com/BepInEx/BepInEx  
 - SybarisLoader https://github.com/BepInEx/BepInEx.SybarisLoader.Patcher  
