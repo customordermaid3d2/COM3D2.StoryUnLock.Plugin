@@ -56,7 +56,17 @@ namespace COM3D2.StoryUnLock.Plugin
         public override void Start()
         {
             base.Start();
-            PersonalNames = PersonalUtill.GetPersonalData().Select((x) => x.uniqueName).ToArray();
+
+            try
+            {
+                PersonalNames = PersonalUtill.GetPersonalData().Select((x) => x.uniqueName).ToArray();
+            }
+            catch (Exception e)
+            {
+                StoryUnLock.myLog.LogFatal("StoryUnLockGUI.Start", e.ToString());
+                PersonalNames = Personal.GetAllDatas(true).Select((x) => x.uniqueName).ToArray();
+            }
+
             ContractNames = new string[] { "Trainee", "Exclusive", "Free", "Random" };
         }
         /*
@@ -108,15 +118,15 @@ namespace COM3D2.StoryUnLock.Plugin
 
             GUILayout.Label("Maid Add");
             if (GUILayout.Button("Maid add")) StoryUnLockUtill.AddStockMaid();
-            if (GUILayout.Button("Maid add * 10"))for (int i = 0; i < 10; i++){ StoryUnLockUtill.AddStockMaid();}
-            if (GUILayout.Button("Maid add * 50"))for (int i = 0; i < 50; i++){ StoryUnLockUtill.AddStockMaid();}
+            if (GUILayout.Button("Maid add * 10")) for (int i = 0; i < 10; i++) { StoryUnLockUtill.AddStockMaid(); }
+            if (GUILayout.Button("Maid add * 50")) for (int i = 0; i < 50; i++) { StoryUnLockUtill.AddStockMaid(); }
             GUILayout.Label("Maid Add Personal");
             if (GUILayout.Button("Personal Rand " + rndPersonal)) rndPersonal = !rndPersonal;
             if (!rndPersonal)
             {
-                selGridPersonal = GUILayout.SelectionGrid(selGridPersonal, PersonalNames, 3 );
+                selGridPersonal = GUILayout.SelectionGrid(selGridPersonal, PersonalNames, 3);
             }
-            
+
             GUILayout.Label("Contract");
             if (GUILayout.Button("Contract Rand " + rndContract + " " + ContractNames[selGridContract])) rndContract = !rndContract;
             if (!rndContract)
