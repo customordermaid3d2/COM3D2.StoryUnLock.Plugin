@@ -63,8 +63,8 @@ namespace COM3D2.StoryUnLock.Plugin
             }
             catch (Exception e)
             {
-                StoryUnLock.myLog.LogFatal("StoryUnLockGUI.Start", e.ToString());
                 PersonalNames = Personal.GetAllDatas(true).Select((x) => x.uniqueName).ToArray();
+                StoryUnLock.myLog.LogError("StoryUnLockGUI.Start", PersonalNames.Length,e.ToString());
             }
 
             ContractNames = new string[] { "Trainee", "Exclusive", "Free", "Random" };
