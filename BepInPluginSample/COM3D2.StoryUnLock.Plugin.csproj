@@ -54,10 +54,6 @@
       <HintPath>..\..\_lib2\COM3D2.API.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="COM3D2.ConfigManButton">
-      <HintPath>..\..\_lib2\COM3D2.ConfigManButton.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="COM3D2.GUIAPI">
       <HintPath>..\..\_lib2\COM3D2.GUIAPI.dll</HintPath>
       <Private>False</Private>

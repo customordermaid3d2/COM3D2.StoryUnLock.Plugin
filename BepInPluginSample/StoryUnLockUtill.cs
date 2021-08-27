@@ -57,6 +57,10 @@ namespace COM3D2.StoryUnLock.Plugin
                         continue;
 
 
+                    if (maid.boNPC || maid.boMAN)
+                        continue;
+
+
                     foreach (ScheduleCSVData.Yotogi yotogi in ScheduleCSVData.YotogiData.Values)
                     {
 
@@ -123,10 +127,11 @@ namespace COM3D2.StoryUnLock.Plugin
                     {
                         foreach (var maid in scenarioData.GetEventMaidList())
                         {
-                            if (maid.status.heroineType == HeroineType.Sub)
-                            {
+                            if (maid.status.heroineType == HeroineType.Sub)                            
                                 continue;
-                            }
+
+                            if (maid.boNPC || maid.boMAN)
+                                continue;
 
                             bool b = maid.status.GetEventEndFlag(scenarioData.ID);
                             if (!b)
@@ -165,7 +170,29 @@ namespace COM3D2.StoryUnLock.Plugin
             });
         }
 
+        internal static void MaidPersonalCnt()
+        {            
+            Dictionary<int, int> d = new Dictionary<int, int>();
+            foreach (var item in Personal.GetAllDatas(true))
+            {
+                d.Add(item.id, 0);
+            }
 
+            foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                d[maid.status.personal.id]++;                
+            }
+
+            foreach (var item in Personal.GetAllDatas(true))
+            {
+                StoryUnLock.myLog.LogError("ScenarioDataUtill.MaidPersonalCnt " 
+                    , item.id
+                    ,item.uniqueName
+                    , d[item.id]
+                    );
+                ;
+            }
+        }
 
         static bool isScenarioExecuteCountAllRun = false;
 
@@ -185,6 +212,9 @@ namespace COM3D2.StoryUnLock.Plugin
                     foreach (Maid maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
                     {
                         if (maid.status.heroineType == HeroineType.Sub)
+                            continue;
+
+                        if (maid.boNPC || maid.boMAN)
                             continue;
 
                         foreach (var data in EmpireLifeModeData.GetAllDatas(true))
@@ -253,6 +283,10 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 if (maid.status.heroineType == HeroineType.Sub)
                     continue;
+
+                if (maid.boNPC || maid.boMAN)
+                    continue;
+
                 SetMaidJobClass(maid);
             }
 
@@ -298,6 +332,10 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 if (maid.status.heroineType == HeroineType.Sub)
                     continue;
+
+                if (maid.boNPC || maid.boMAN)
+                    continue;
+
                 SetMaidYotogiClass(maid);
             }
 
@@ -334,6 +372,9 @@ namespace COM3D2.StoryUnLock.Plugin
                 if (maid.status.heroineType == HeroineType.Sub)
                     continue;
 
+                if (maid.boNPC || maid.boMAN)
+                    continue;
+
                 SetMaidSkill(maid);
             }
 
@@ -368,9 +409,13 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-                if (maid.status.heroineType != HeroineType.Sub)
-                    SetMaidStatus(maid);
+                if (maid.status.heroineType == HeroineType.Sub)
+                    continue;
 
+                if (maid.boNPC || maid.boMAN)
+                    continue;
+                
+                SetMaidStatus(maid);
             }
 
             StoryUnLock.myLog.LogDarkBlue("MaidStatusUtill.SetMaidStatusAll. end");
