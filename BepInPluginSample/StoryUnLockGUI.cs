@@ -134,6 +134,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 selGridContract = GUILayout.SelectionGrid(selGridContract, ContractNames, 2);
             }
             /**/
+            GUILayout.Label("etc");
             if (GUILayout.Button("Maid Personal cnt")) StoryUnLockUtill.MaidPersonalCnt();
         }
 

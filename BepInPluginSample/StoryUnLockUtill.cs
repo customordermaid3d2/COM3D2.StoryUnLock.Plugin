@@ -180,12 +180,16 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
+                if (maid.boMAN || maid.boNPC )
+                {
+                    continue;
+                }
                 d[maid.status.personal.id]++;                
             }
 
             foreach (var item in Personal.GetAllDatas(true))
             {
-                StoryUnLock.myLog.LogError("ScenarioDataUtill.MaidPersonalCnt " 
+                StoryUnLock.myLog.LogMessage("ScenarioDataUtill.MaidPersonalCnt " 
                     , item.id
                     ,item.uniqueName
                     , d[item.id]
