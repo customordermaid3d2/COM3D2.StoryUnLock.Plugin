@@ -180,7 +180,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-                if (maid.boMAN || maid.boNPC )
+                if (maid.boMAN || maid.boNPC || maid.status.heroineType == HeroineType.Sub)
                 {
                     continue;
                 }
