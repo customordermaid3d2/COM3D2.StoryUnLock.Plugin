@@ -1,4 +1,5 @@
-﻿using COM3D2.LillyUtill;
+﻿using BepInEx.Configuration;
+using COM3D2.LillyUtill;
 using MaidStatus;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,14 @@ namespace COM3D2.StoryUnLock.Plugin
 {
     class StoryUnLockGUI : MyGUI
     {
+        private ConfigEntry<bool> btnLock;
+
         /*
         public override void Awake()
         {
             base.Awake();
 
+            
         }
 
         public override bool Equals(object other)
@@ -53,9 +57,14 @@ namespace COM3D2.StoryUnLock.Plugin
             base.OnSceneLoaded(scene, mode);
         }
 */
+
+
+
         public override void Start()
         {
             base.Start();
+
+            btnLock = config.Bind("GUI", "btn Lock", false);
 
             try
             {
@@ -68,6 +77,8 @@ namespace COM3D2.StoryUnLock.Plugin
             }
 
             ContractNames = new string[] { "Trainee", "Exclusive", "Free", "Random" };
+
+           
         }
         /*
         public override string ToString()
@@ -87,14 +98,33 @@ namespace COM3D2.StoryUnLock.Plugin
         */
         public override void WindowFunctionBody(int id)
         {
+            GUILayout.Label("etc");
+            if (GUILayout.Button("Maid Personal cnt")) StoryUnLockUtill.MaidPersonalCnt();
+
+            GUILayout.Label("maid select");
+            // 여기는 출력된 메이드들 이름만 가져옴
+            // seleted 가 이름 위치 번호만 가져온건데
+            seleted = MaidActivePatch.SelectionGrid3(seleted);
+
+            if (GUILayout.Button("MaidStatus Setting")) StoryUnLockUtill.SetMaidStatusAll(seleted);
+
+
+
+
+
+
+
             //base.WindowFunctionBody(id);
             GUILayout.Label("All Maid Setting");
+            
+            GUI.enabled = btnLock.Value;
             if (GUILayout.Button("Work Setting")) StoryUnLockUtill.SetWorkAll();
             if (GUILayout.Button("Scenario Setting")) StoryUnLockUtill.SetScenarioDataAll();
             if (GUILayout.Button("EmpireLife Setting")) StoryUnLockUtill.SetEmpireLifeModeDataAll();
             if (GUILayout.Button("JobClass Setting")) StoryUnLockUtill.SetMaidJobClassAll();
             if (GUILayout.Button("YotogiClass Setting")) StoryUnLockUtill.SetMaidYotogiClassAll();
             if (GUILayout.Button("Maid skill Setting")) StoryUnLockUtill.SetMaidSkillAll();
+            GUI.enabled = true;
             if (GUILayout.Button("MaidStatus Setting")) StoryUnLockUtill.SetMaidStatusAll();
 
             GUILayout.Label("All Maid Flag Remove");
@@ -134,8 +164,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 selGridContract = GUILayout.SelectionGrid(selGridContract, ContractNames, 2);
             }
             /**/
-            GUILayout.Label("etc");
-            if (GUILayout.Button("Maid Personal cnt")) StoryUnLockUtill.MaidPersonalCnt();
+
         }
 
         public static bool rndPersonal = true;
@@ -145,6 +174,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
         public static string[] PersonalNames;//= new string[] { "radio1", "radio2", "radio3" };
         public static string[] ContractNames;//= new string[] { "radio1", "radio2", "radio3" };
+        private int seleted;
     }
 
 }

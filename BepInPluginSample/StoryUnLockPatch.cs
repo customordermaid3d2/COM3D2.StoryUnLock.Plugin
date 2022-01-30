@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace COM3D2.StoryUnLock.Plugin
 {
@@ -43,5 +44,53 @@ namespace COM3D2.StoryUnLock.Plugin
             }
         }
 
+        //--------------------------------------------------
+        /*
+        static Harmony instance;
+
+        public static void Main()
+        {
+            instance = Harmony.CreateAndPatchAll(typeof(AddScriptsSample));
+        }
+
+        public static void Unload()
+        {
+            if (instance != null)
+                instance.UnpatchAll(instance.Id);
+            instance = null;
+        }
+
+        [HarmonyPatch(typeof(FreeModeItemEveryday), "CreateItemEverydayList")]
+        [HarmonyPostfix]
+        //public static List<FreeModeItemEveryday> CreateItemEverydayList(FreeModeItemEveryday.ScnearioType type, MaidStatus.Status maidStatus = null)
+        public static void CreateItemEverydayList(ref List<FreeModeItemEveryday> __result)
+        {
+            Debug.Log("- - - - - - - - - - - - - - - ");
+            Debug.Log($"cnt : {__result.Count}");
+            foreach (var item in __result)
+            {
+                Debug.Log($"{item.is_enabled} , {item.title}");                
+            }
+            Debug.Log("- - - - - - - - - - - - - - - ");
+        }
+
+        [HarmonyPatch(typeof(FreeModeItemEveryday), "IsEnabledFlag")]
+        [HarmonyPrefix]
+        //public static bool IsEnabledFlag(FreeModeItemEveryday.ScnearioType type, string flag_name)
+        public static bool IsEnabledFlag(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
+        
+        [HarmonyPatch(typeof(FreeModeItemLifeMode), "is_enabled" , MethodType.Getter)]
+        [HarmonyPrefix]
+        //public static bool IsEnabledFlag(FreeModeItemEveryday.ScnearioType type, string flag_name)
+        public static bool is_enabled(ref bool __result)
+        {
+            __result = true;
+            return false;
+        }
+        */
     }
 }

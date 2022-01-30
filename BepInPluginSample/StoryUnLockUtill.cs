@@ -170,6 +170,8 @@ namespace COM3D2.StoryUnLock.Plugin
             });
         }
 
+
+
         internal static void MaidPersonalCnt()
         {            
             Dictionary<int, int> d = new Dictionary<int, int>();
@@ -334,10 +336,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-                if (maid.status.heroineType == HeroineType.Sub)
-                    continue;
-
-                if (maid.boNPC || maid.boMAN)
+                if (maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
                     continue;
 
                 SetMaidYotogiClass(maid);
@@ -349,6 +348,7 @@ namespace COM3D2.StoryUnLock.Plugin
         public static void SetMaidYotogiClass(Maid maid)
         {
             StoryUnLock.myLog.LogDarkBlue("SetMaidYotogiClass. start");
+
             #region YotogiClass
 
             YotogiClassSystem yotogiClassSystem = maid.status.yotogiClass;
@@ -373,10 +373,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-                if (maid.status.heroineType == HeroineType.Sub)
-                    continue;
-
-                if (maid.boNPC || maid.boMAN)
+                if (maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
                     continue;
 
                 SetMaidSkill(maid);
@@ -413,16 +410,20 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-                if (maid.status.heroineType == HeroineType.Sub)
-                    continue;
 
-                if (maid.boNPC || maid.boMAN)
-                    continue;
-                
-                SetMaidStatus(maid);
             }
 
             StoryUnLock.myLog.LogDarkBlue("MaidStatusUtill.SetMaidStatusAll. end");
+        }
+
+        internal static void SetMaidStatusAll(int seleted)
+        {
+            Maid maid = MaidActivePatch.GetMaid(seleted);
+
+            if (maid==null||maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
+                return;
+
+            SetMaidStatus(maid);
         }
 
         public static void SetMaidStatus(Maid maid)
