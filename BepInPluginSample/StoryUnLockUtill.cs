@@ -193,7 +193,8 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 StoryUnLock.myLog.LogMessage("ScenarioDataUtill.MaidPersonalCnt " 
                     , item.id
-                    ,item.uniqueName
+                    , item.replaceText
+                    , item.uniqueName
                     , d[item.id]
                     );
                 ;
