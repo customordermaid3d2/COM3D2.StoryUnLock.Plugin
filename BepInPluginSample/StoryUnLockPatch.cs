@@ -93,7 +93,8 @@ namespace COM3D2.StoryUnLock.Plugin
         }
         */
 
-        [HarmonyPrefix, HarmonyPatch(typeof(SceneEdit), "OnEndScene")]
+        [HarmonyPatch(typeof(SceneEdit), "OnEndScene")]
+        [HarmonyPrefix]
         public static void OnEndScene(string ___m_strScriptArg, Maid ___m_maid)
         {
             // MaidManagementMain.OnSelectChara: , A1 , 구 메이드 비서   , Sub , Exclusive
@@ -101,6 +102,7 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 return;
             }
+            StoryUnLock.myLog.LogMessage("SceneEdit.OnEndScene");
             if (StoryUnLockGUI.newMaid.Value)
             {
                 GameMain.Instance.CMSystem.SetTmpGenericFlag("新規雇用メイド", 1);
@@ -117,8 +119,9 @@ namespace COM3D2.StoryUnLock.Plugin
         {            
             if (StoryUnLockGUI.statusAuto.Value)
             {
+                StoryUnLock.myLog.LogMessage("SceneEdit.OnCompleteFadeIn");
                 //GameMain.Instance.CharacterMgr.GetMaid(0);
-               StoryUnLockUtill.SetMaidStatus(___m_maid);
+                StoryUnLockUtill.SetMaidStatus(___m_maid);
                StoryUnLockUtill.SetMaidYotogiClass(___m_maid);
                StoryUnLockUtill.SetMaidJobClass(___m_maid);
                StoryUnLockUtill.SetMaidSkill(___m_maid);
