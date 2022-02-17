@@ -188,7 +188,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 }
                 d[maid.status.personal.id]++;                
             }
-
+            // 20 , B , Cool , 0
             foreach (var item in Personal.GetAllDatas(true))
             {
                 StoryUnLock.myLog.LogMessage("ScenarioDataUtill.MaidPersonalCnt " 
@@ -423,8 +423,11 @@ namespace COM3D2.StoryUnLock.Plugin
 
             if (maid==null||maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
                 return;
-
+                        
             SetMaidStatus(maid);
+            SetMaidYotogiClass(maid);
+            SetMaidJobClass(maid);
+            SetMaidSkill(maid);
         }
 
         public static void SetMaidStatus(Maid maid)

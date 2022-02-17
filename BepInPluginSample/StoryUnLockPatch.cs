@@ -92,5 +92,37 @@ namespace COM3D2.StoryUnLock.Plugin
             return false;
         }
         */
+
+        [HarmonyPrefix, HarmonyPatch(typeof(SceneEdit), "OnEndScene")]
+        public static void OnEndScene(string ___m_strScriptArg, Maid ___m_maid)
+        {
+            // MaidManagementMain.OnSelectChara: , A1 , 구 메이드 비서   , Sub , Exclusive
+            if (___m_maid.status.heroineType == MaidStatus.HeroineType.Sub)
+            {
+                return;
+            }
+            if (StoryUnLockGUI.newMaid.Value)
+            {
+                GameMain.Instance.CMSystem.SetTmpGenericFlag("新規雇用メイド", 1);
+            }
+            else if (StoryUnLockGUI.movMaid.Value)
+            {
+                GameMain.Instance.CMSystem.SetTmpGenericFlag("移籍メイド", 1);
+            }
+        }
+
+        [HarmonyPatch(typeof(SceneEdit), "OnCompleteFadeIn")]
+        [HarmonyPostfix]
+        public static void OnCompleteFadeIn(Maid ___m_maid) // Maid ___m_maid,SceneEdit __instance
+        {            
+            if (StoryUnLockGUI.statusAuto.Value)
+            {
+                //GameMain.Instance.CharacterMgr.GetMaid(0);
+               StoryUnLockUtill.SetMaidStatus(___m_maid);
+               StoryUnLockUtill.SetMaidYotogiClass(___m_maid);
+               StoryUnLockUtill.SetMaidJobClass(___m_maid);
+               StoryUnLockUtill.SetMaidSkill(___m_maid);
+            }
+        }
     }
 }

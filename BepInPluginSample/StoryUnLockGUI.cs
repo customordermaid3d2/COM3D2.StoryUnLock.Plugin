@@ -12,7 +12,10 @@ namespace COM3D2.StoryUnLock.Plugin
 {
     class StoryUnLockGUI : MyGUI
     {
-        private ConfigEntry<bool> btnLock;
+        public static ConfigEntry<bool> btnLock;
+        public static ConfigEntry<bool> statusAuto;
+        public static ConfigEntry<bool> newMaid;
+        public static ConfigEntry<bool> movMaid;
 
         /*
         public override void Awake()
@@ -65,6 +68,9 @@ namespace COM3D2.StoryUnLock.Plugin
             base.Start();
 
             btnLock = config.Bind("GUI", "btn Lock", false);
+            statusAuto = config.Bind("AddStockMaid", "_SetMaidStatusOnOff", true);
+            newMaid = config.Bind("AddStockMaid", "newMaid", true);
+            movMaid = config.Bind("AddStockMaid", "movMaid", true);
 
             try
             {
@@ -73,12 +79,12 @@ namespace COM3D2.StoryUnLock.Plugin
             catch (Exception e)
             {
                 PersonalNames = Personal.GetAllDatas(true).Select((x) => x.uniqueName).ToArray();
-                StoryUnLock.myLog.LogError("StoryUnLockGUI.Start", PersonalNames.Length,e.ToString());
+                StoryUnLock.myLog.LogError("StoryUnLockGUI.Start", PersonalNames.Length, e.ToString());
             }
 
             ContractNames = new string[] { "Trainee", "Exclusive", "Free", "Random" };
 
-           
+
         }
         /*
         public override string ToString()
@@ -106,17 +112,18 @@ namespace COM3D2.StoryUnLock.Plugin
             // seleted 가 이름 위치 번호만 가져온건데
             seleted = MaidActivePatch.SelectionGrid3(seleted);
 
-            if (GUILayout.Button("MaidStatus Setting")) StoryUnLockUtill.SetMaidStatusAll(seleted);
+            if (GUILayout.Button("Maid Setting")) StoryUnLockUtill.SetMaidStatusAll(seleted);
 
+            if (GUILayout.Button("Maid cheat " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
 
-
-
-
+            GUILayout.Label("메이드 에딧 종료시 이벤트");
+            if (GUILayout.Button("New Maid " + newMaid.Value)) newMaid.Value = !newMaid.Value;
+            if (GUILayout.Button("Mov Maid " + movMaid.Value)) movMaid.Value = !movMaid.Value;
 
 
             //base.WindowFunctionBody(id);
             GUILayout.Label("All Maid Setting");
-            
+
             GUI.enabled = btnLock.Value;
             if (GUILayout.Button("Work Setting")) StoryUnLockUtill.SetWorkAll();
             if (GUILayout.Button("Scenario Setting")) StoryUnLockUtill.SetScenarioDataAll();
