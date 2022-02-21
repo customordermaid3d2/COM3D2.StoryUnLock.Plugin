@@ -1,5 +1,5 @@
 ﻿using BepInEx.Configuration;
-using COM3D2.LillyUtill;
+using COM3D25.LillyUtill;
 using MaidStatus;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace COM3D2.StoryUnLock.Plugin
+namespace COM3D25.StoryUnLock.Plugin
 {
     class StoryUnLockGUI : MyGUI
     {
@@ -68,9 +68,9 @@ namespace COM3D2.StoryUnLock.Plugin
             base.Start();
 
             btnLock = config.Bind("GUI", "btn Lock", false);
-            statusAuto = config.Bind("AddStockMaid", "_SetMaidStatusOnOff", true);
-            newMaid = config.Bind("AddStockMaid", "newMaid", true);
-            movMaid = config.Bind("AddStockMaid", "movMaid", true);
+            statusAuto = config.Bind("AddStockMaid", "_SetMaidStatusOnOff", false);
+            newMaid = config.Bind("AddStockMaid", "newMaid", false);
+            movMaid = config.Bind("AddStockMaid", "movMaid", false);
 
             try
             {

@@ -1,6 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
-using COM3D2.LillyUtill;
+using COM3D25.LillyUtill;
 using COM3D2API;
 using HarmonyLib;
 using Newtonsoft.Json;
@@ -13,18 +13,18 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace COM3D2.StoryUnLock.Plugin
+namespace COM3D25.StoryUnLock.Plugin
 {
     public class MyAttribute
     {
         public const string PLAGIN_NAME = "StoryUnLock";
-        public const string PLAGIN_VERSION = "21.7.25";
+        public const string PLAGIN_VERSION = "22.2.22";
         public const string PLAGIN_FULL_NAME = "COM3D2.StoryUnLock.Plugin";
     }
 
     [BepInPlugin(MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, MyAttribute.PLAGIN_VERSION)]// 버전 규칙 잇음. 반드시 2~4개의 숫자구성으로 해야함. 미준수시 못읽어들임
     //[BepInPlugin("COM3D2.Sample.Plugin", "COM3D2.Sample.Plugin", "21.6.6")]// 버전 규칙 잇음. 반드시 2~4개의 숫자구성으로 해야함. 미준수시 못읽어들임
-    [BepInProcess("COM3D2x64.exe")]
+    //[BepInProcess("COM3D2x64.exe")]
     public class StoryUnLock : BaseUnityPlugin
     {
         // 단축키 설정파일로 연동
@@ -82,7 +82,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             //SampleGUI.Install(gameObject, Config);
 
-            StoryUnLockGUI.Install<StoryUnLockGUI>(gameObject, Config, MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, "SU", COM3D2.StoryUnLock.Plugin.Properties.Resources.icon, new BepInEx.Configuration.KeyboardShortcut(KeyCode.Alpha9, KeyCode.LeftControl));
+            StoryUnLockGUI.Install<StoryUnLockGUI>(gameObject, Config, MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, "SU", Properties.Resources.icon, new BepInEx.Configuration.KeyboardShortcut(KeyCode.Alpha9, KeyCode.LeftControl));
 
             //SystemShortcutAPI.AddButton(MyAttribute.PLAGIN_FULL_NAME, new Action(delegate () { enabled = !enabled; }), MyAttribute.PLAGIN_NAME, MyUtill.ExtractResource(BepInPluginSample.Properties.Resources.icon));
         }

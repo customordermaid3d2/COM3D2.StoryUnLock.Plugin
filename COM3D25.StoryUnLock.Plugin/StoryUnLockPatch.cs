@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace COM3D2.StoryUnLock.Plugin
+namespace COM3D25.StoryUnLock.Plugin
 {
     class StoryUnLockPatch
     {
@@ -93,6 +93,11 @@ namespace COM3D2.StoryUnLock.Plugin
         }
         */
 
+        /// <summary>
+        /// 에딧 종료
+        /// </summary>
+        /// <param name="___m_strScriptArg"></param>
+        /// <param name="___m_maid"></param>
         [HarmonyPatch(typeof(SceneEdit), "OnEndScene")]
         [HarmonyPrefix]
         public static void OnEndScene(string ___m_strScriptArg, Maid ___m_maid)
