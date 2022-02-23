@@ -1,12 +1,14 @@
-﻿using FacilityFlag;
+﻿using COM3D2.LillyUtill;
+using FacilityFlag;
 using HarmonyLib;
+using scoutmode;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace COM3D25.StoryUnLock.Plugin
+namespace COM3D2.StoryUnLock.Plugin
 {
     class StoryUnLockPatch
     {
@@ -118,19 +120,39 @@ namespace COM3D25.StoryUnLock.Plugin
             }
         }
 
+        private static bool isNewMaid;
+
+        [HarmonyPostfix]
+        [HarmonyPatch(typeof(ScoutMainScreenManager), "AddScoutMaid")]
+        [HarmonyPatch(typeof(MaidManagementMain), "Employment")]
+        public static void NewMaid()
+        {
+            isNewMaid = true;
+        }
+
         [HarmonyPatch(typeof(SceneEdit), "OnCompleteFadeIn")]
         [HarmonyPostfix]
         public static void OnCompleteFadeIn(Maid ___m_maid) // Maid ___m_maid,SceneEdit __instance
-        {            
+        {
+            if (!isNewMaid)
+            {
+                return;
+            }
+            if (StoryUnLockGUI.personalRandom.Value)
+            {
+                PersonalUtill.SetPersonalRandom(___m_maid);
+            }
             if (StoryUnLockGUI.statusAuto.Value)
             {
                 StoryUnLock.myLog.LogMessage("SceneEdit.OnCompleteFadeIn");
                 //GameMain.Instance.CharacterMgr.GetMaid(0);
+                
                 StoryUnLockUtill.SetMaidStatus(___m_maid);
-               StoryUnLockUtill.SetMaidYotogiClass(___m_maid);
-               StoryUnLockUtill.SetMaidJobClass(___m_maid);
-               StoryUnLockUtill.SetMaidSkill(___m_maid);
+                StoryUnLockUtill.SetMaidYotogiClass(___m_maid);
+                StoryUnLockUtill.SetMaidJobClass(___m_maid);
+                StoryUnLockUtill.SetMaidSkill(___m_maid);
             }
+            isNewMaid = false;
         }
     }
 }

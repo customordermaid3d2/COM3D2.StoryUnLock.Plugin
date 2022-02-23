@@ -1,4 +1,4 @@
-﻿using COM3D2.LillyUtill;
+﻿using COM3D25.LillyUtill;
 using FacilityFlag;
 using HarmonyLib;
 using scoutmode;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace COM3D2.StoryUnLock.Plugin
+namespace COM3D25.StoryUnLock.Plugin
 {
     class StoryUnLockPatch
     {
@@ -146,7 +146,7 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 StoryUnLock.myLog.LogMessage("SceneEdit.OnCompleteFadeIn");
                 //GameMain.Instance.CharacterMgr.GetMaid(0);
-
+                
                 StoryUnLockUtill.SetMaidStatus(___m_maid);
                 StoryUnLockUtill.SetMaidYotogiClass(___m_maid);
                 StoryUnLockUtill.SetMaidJobClass(___m_maid);

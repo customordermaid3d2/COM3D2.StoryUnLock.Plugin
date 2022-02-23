@@ -13,6 +13,7 @@ namespace COM3D2.StoryUnLock.Plugin
     class StoryUnLockGUI : MyGUI
     {
         public static ConfigEntry<bool> btnLock;
+        public static ConfigEntry<bool> personalRandom;
         public static ConfigEntry<bool> statusAuto;
         public static ConfigEntry<bool> newMaid;
         public static ConfigEntry<bool> movMaid;
@@ -68,6 +69,7 @@ namespace COM3D2.StoryUnLock.Plugin
             base.Start();
 
             btnLock = config.Bind("GUI", "btn Lock", false);
+            personalRandom = config.Bind("AddStockMaid", "personalRandom", true);
             statusAuto = config.Bind("AddStockMaid", "_SetMaidStatusOnOff", false);
             newMaid = config.Bind("AddStockMaid", "newMaid", false);
             movMaid = config.Bind("AddStockMaid", "movMaid", false);
@@ -114,6 +116,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             if (GUILayout.Button("Maid Setting")) StoryUnLockUtill.SetMaidStatusAll(seleted);
 
+            if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
             if (GUILayout.Button("Maid cheat " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
 
             GUILayout.Label("메이드 에딧 종료시 이벤트");

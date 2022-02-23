@@ -1,5 +1,5 @@
 ﻿using BepInEx.Configuration;
-using COM3D2.LillyUtill;
+using COM3D25.LillyUtill;
 using FacilityFlag;
 using MaidStatus;
 using MaidStatus.CsvData;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using wf;
 using Yotogis;
 
-namespace COM3D2.StoryUnLock.Plugin
+namespace COM3D25.StoryUnLock.Plugin
 {
     class StoryUnLockUtill
     {

@@ -59,8 +59,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="COM3D2.LillyUtill">
-      <HintPath>C:\Downloads\plugin\COM3D2.LillyUtill.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>H:\COM3D2\BepinEx\plugins\COM3D2.LillyUtill.dll</HintPath>
     </Reference>
     <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
       <HintPath>..\packages\Mono.Cecil.0.10.4\lib\net35\Mono.Cecil.dll</HintPath>
