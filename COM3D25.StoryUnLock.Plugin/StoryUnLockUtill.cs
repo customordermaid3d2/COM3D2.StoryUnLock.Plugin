@@ -1,6 +1,7 @@
 ﻿using BepInEx.Configuration;
-using COM3D2.LillyUtill;
 using FacilityFlag;
+using LillyUtill.MyMaidActive;
+using LillyUtill.MyPersonal;
 using MaidStatus;
 using MaidStatus.CsvData;
 using PlayerStatus;
@@ -38,7 +39,7 @@ namespace COM3D2.StoryUnLock.Plugin
             Task.Factory.StartNew(() =>
             {
                 isSetAllWorkRun = true;
-                StoryUnLock.myLog.LogDarkBlue("ScheduleAPIPatch.SetAllWork. start");
+                StoryUnLock.myLog.LogMessage("ScheduleAPIPatch.SetAllWork. start");
 
                 ReadOnlyDictionary<int, NightWorkState> night_works_state_dic = GameMain.Instance.CharacterMgr.status.night_works_state_dic;
                 StoryUnLock.myLog.LogMessage("ScheduleAPIPatch.SetAllWork.night_works_state_dic:" + night_works_state_dic.Count);
@@ -52,7 +53,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 StoryUnLock.myLog.LogMessage("ScheduleAPIPatch.SetAllWork.YotogiData:" + ScheduleCSVData.YotogiData.Values.Count);
                 foreach (Maid maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
                 {
-                    StoryUnLock.myLog.LogMessage(".SetAllWork.Yotogi:" + maid.status.fullNameEnStyle, ScheduleCSVData.YotogiData.Values.Count);
+                    StoryUnLock.myLog.LogMessage($".SetAllWork.Yotogi: { maid.status.fullNameEnStyle}, {ScheduleCSVData.YotogiData.Values.Count}");
                     if (maid.status.heroineType == HeroineType.Sub)
                         continue;
 
@@ -97,7 +98,7 @@ namespace COM3D2.StoryUnLock.Plugin
                     }
                 }
 
-                StoryUnLock.myLog.LogDarkBlue("ScheduleAPIPatch.SetAllWork. end");
+                StoryUnLock.myLog.LogMessage("ScheduleAPIPatch.SetAllWork. end");
                 isSetAllWorkRun = false;
             });
 
@@ -116,7 +117,7 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 isRunSetScenarioDataAll = true;
 
-                StoryUnLock.myLog.LogDarkBlue("SetScenarioDataAll. start");
+                StoryUnLock.myLog.LogMessage("SetScenarioDataAll. start");
 
                 // 병렬 처리
                 foreach (var scenarioData in GameMain.Instance.ScenarioSelectMgr.GetAllScenarioData())
@@ -164,7 +165,7 @@ namespace COM3D2.StoryUnLock.Plugin
                     StoryUnLock.myLog.LogError("ScenarioDataUtill.SetScenarioDataAll1 : " + e.ToString());
                 }
 
-                StoryUnLock.myLog.LogDarkBlue("SetScenarioDataAll. end");
+                StoryUnLock.myLog.LogMessage("SetScenarioDataAll. end");
 
                 isRunSetScenarioDataAll = false;
             });
@@ -189,12 +190,7 @@ namespace COM3D2.StoryUnLock.Plugin
             // 20 , B , Cool , 0
             foreach (var item in Personal.GetAllDatas(true))
             {
-                StoryUnLock.myLog.LogMessage("ScenarioDataUtill.MaidPersonalCnt " 
-                    , item.id
-                    , item.replaceText
-                    , item.uniqueName
-                    , d[item.id]
-                    );
+                StoryUnLock.myLog.LogMessage($"ScenarioDataUtill.MaidPersonalCnt , {item.id} , {item.replaceText} , {item.uniqueName} , {d[item.id]}");
                 ;
             }
         }
@@ -211,7 +207,7 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 Task.Factory.StartNew(() =>
                 {
-                    StoryUnLock.myLog.LogDarkBlue("SetScenarioExecuteCountAll. start");
+                    StoryUnLock.myLog.LogMessage("SetScenarioExecuteCountAll. start");
                     isScenarioExecuteCountAllRun = true;
 
                     foreach (Maid maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
@@ -237,7 +233,7 @@ namespace COM3D2.StoryUnLock.Plugin
                     }
 
                     isScenarioExecuteCountAllRun = false;
-                    StoryUnLock.myLog.LogDarkBlue("SetScenarioExecuteCountAll. end");
+                    StoryUnLock.myLog.LogMessage("SetScenarioExecuteCountAll. end");
                 });
             }
         }
@@ -281,7 +277,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
         public static void SetMaidJobClassAll()
         {
-            StoryUnLock.myLog.LogDarkBlue("SetMaidJobClassAll. start");
+            StoryUnLock.myLog.LogMessage("SetMaidJobClassAll. start");
 
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
@@ -295,7 +291,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 SetMaidJobClass(maid);
             }
 
-            StoryUnLock.myLog.LogDarkBlue("SetMaidJobClassAll. end");
+            StoryUnLock.myLog.LogMessage("SetMaidJobClassAll. end");
         }
 
 
@@ -331,7 +327,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
         public static void SetMaidYotogiClassAll()
         {
-            StoryUnLock.myLog.LogDarkBlue("SetMaidYotogiClassAll. start");
+            StoryUnLock.myLog.LogMessage("SetMaidYotogiClassAll. start");
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
@@ -341,34 +337,34 @@ namespace COM3D2.StoryUnLock.Plugin
                 SetMaidYotogiClass(maid);
             }
 
-            StoryUnLock.myLog.LogDarkBlue("SetMaidYotogiClassAll. start");
+            StoryUnLock.myLog.LogMessage("SetMaidYotogiClassAll. start");
         }
 
         public static void SetMaidYotogiClass(Maid maid)
         {
-            StoryUnLock.myLog.LogDarkBlue("SetMaidYotogiClass. start");
+            StoryUnLock.myLog.LogMessage("SetMaidYotogiClass. start");
 
             #region YotogiClass
 
             YotogiClassSystem yotogiClassSystem = maid.status.yotogiClass;
             List<YotogiClass.Data> learnPossibleYotogiClassDatas = yotogiClassSystem.GetLearnPossibleClassDatas(true, AbstractClassData.ClassType.Share | AbstractClassData.ClassType.New | AbstractClassData.ClassType.Old);
 
-            StoryUnLock.myLog.LogMessage("SetMaidStatus.YotogiClass learn", maid.status.fullNameEnStyle, learnPossibleYotogiClassDatas.Count);
+            //StoryUnLock.myLog.LogMessage("SetMaidStatus.YotogiClass learn", maid.status.fullNameEnStyle, learnPossibleYotogiClassDatas.Count);
             foreach (YotogiClass.Data data in learnPossibleYotogiClassDatas)
                 maid.status.yotogiClass.Add(data, true, true);
 
             var yotogiClassSystems = yotogiClassSystem.GetAllDatas().Values;
-            StoryUnLock.myLog.LogMessage("SetMaidStatus.YotogiClass expSystem", maid.status.fullNameEnStyle, yotogiClassSystems.Count);
+            //StoryUnLock.myLog.LogMessage("SetMaidStatus.YotogiClass expSystem", maid.status.fullNameEnStyle, yotogiClassSystems.Count);
             SetExpMax(yotogiClassSystems.Select(x => x.expSystem));
 
             #endregion
 
-            StoryUnLock.myLog.LogDarkBlue("SetMaidYotogiClass. end");
+            StoryUnLock.myLog.LogMessage("SetMaidYotogiClass. end");
         }
 
         public static void SetMaidSkillAll()
         {
-            StoryUnLock.myLog.LogDarkBlue("SetMaidSkillAll. start");
+            StoryUnLock.myLog.LogMessage("SetMaidSkillAll. start");
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
@@ -378,7 +374,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 SetMaidSkill(maid);
             }
 
-            StoryUnLock.myLog.LogDarkBlue("SetMaidSkillAll. end");
+            StoryUnLock.myLog.LogMessage("SetMaidSkillAll. end");
         }
 
         public static void SetMaidSkill(Maid maid)
@@ -405,19 +401,19 @@ namespace COM3D2.StoryUnLock.Plugin
 
         public static void SetMaidStatusAll()
         {
-            StoryUnLock.myLog.LogDarkBlue("MaidStatusUtill.SetMaidStatusAll. start");
+            StoryUnLock.myLog.LogMessage("MaidStatusUtill.SetMaidStatusAll. start");
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
 
             }
 
-            StoryUnLock.myLog.LogDarkBlue("MaidStatusUtill.SetMaidStatusAll. end");
+            StoryUnLock.myLog.LogMessage("MaidStatusUtill.SetMaidStatusAll. end");
         }
 
         internal static void SetMaidStatusAll(int seleted)
         {
-            Maid maid = MaidActivePatch.GetMaid(seleted);
+            Maid maid = MaidActiveUtill.GetMaid(seleted);
 
             if (maid==null||maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
                 return;
@@ -490,7 +486,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 maid.status.AddPropensity(data);
 
 
-            StoryUnLock.myLog.LogMessage("SetMaidStatus.WorkData max : " + maid.status.fullNameEnStyle, maid.status.workDatas.Count);
+            //StoryUnLock.myLog.LogMessage("SetMaidStatus.WorkData max : " + maid.status.fullNameEnStyle, maid.status.workDatas.Count);
             foreach (WorkData workData in maid.status.workDatas.GetValueArray())
             {
                 workData.level = 10;
@@ -630,7 +626,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
         internal static void SetFreeModeItemEverydayAll()
         {
-            StoryUnLock.myLog.LogDarkBlue("ScenarioDataUtill.SetScenarioAll. start");
+            StoryUnLock.myLog.LogMessage("ScenarioDataUtill.SetScenarioAll. start");
 
             SetEveryday(FreeModeItemEveryday.ScnearioType.Nitijyou);
             StoryUnLock.myLog.LogInfo("ScenarioDataUtill.SetScenarioAll. Nitijyou end");
@@ -638,7 +634,7 @@ namespace COM3D2.StoryUnLock.Plugin
             SetEveryday(FreeModeItemEveryday.ScnearioType.Story);
             StoryUnLock.myLog.LogInfo("ScenarioDataUtill.SetScenarioAll. Story emd");
 
-            StoryUnLock.myLog.LogDarkBlue("ScenarioDataUtill.SetScenarioAll. end");
+            StoryUnLock.myLog.LogMessage("ScenarioDataUtill.SetScenarioAll. end");
         }
 
         private static void SetEveryday(FreeModeItemEveryday.ScnearioType type)
@@ -726,13 +722,13 @@ namespace COM3D2.StoryUnLock.Plugin
 
                                 if (GameMain.Instance.CharacterMgr.status.GetFlag(fixingFlagText + check_flag_name) == 0)
                                 {
-                                    StoryUnLock.myLog.LogMessage("SetEverydaySub.Flag"
-                                    , check_flag_name
-                                    , call_file_name
-                                    , cellAsInteger
-                                    , name
-                                    , info_text
-                                    );
+                                    //StoryUnLock.myLog.LogMessage("SetEverydaySub.Flag"
+                                    //, check_flag_name
+                                    //, call_file_name
+                                    //, cellAsInteger
+                                    //, name
+                                    //, info_text
+                                    //);
                                     GameMain.Instance.CharacterMgr.status.SetFlag(fixingFlagText + check_flag_name, 1);
                                 }
 
@@ -746,12 +742,12 @@ namespace COM3D2.StoryUnLock.Plugin
 
         internal static void SetYotogiAll()
         {
-            StoryUnLock.myLog.LogDarkBlue("SetAllYotogi START");
+            StoryUnLock.myLog.LogMessage("SetAllYotogi START");
 
             foreach (var item in ScheduleCSVData.YotogiData)
             {
                 ScheduleCSVData.Yotogi yotogi = item.Value;
-                StoryUnLock.myLog.LogMessage("SetScenarioAll.YotogiData", item.Key, yotogi.yotogiType);
+                //StoryUnLock.myLog.LogMessage("SetScenarioAll.YotogiData", item.Key, yotogi.yotogiType);
                 if (yotogi.condManVisibleFlag1.Count > 0)
                 {
                     for (int j = 0; j < yotogi.condManVisibleFlag1.Count; j++)
@@ -765,12 +761,12 @@ namespace COM3D2.StoryUnLock.Plugin
                 }
             }
 
-            StoryUnLock.myLog.LogDarkBlue("SetAllYotogi END"           );
+            StoryUnLock.myLog.LogMessage("SetAllYotogi END"           );
         }
 
         internal static void SetAllPlayerStatus()
         {
-            StoryUnLock.myLog.LogDarkBlue("SetAllPlayerStatus st");
+            StoryUnLock.myLog.LogMessage("SetAllPlayerStatus st");
 
             PlayerStatus.Status status = GameMain.Instance.CharacterMgr.status;
             status.casinoCoin = 999999L;
@@ -789,15 +785,15 @@ namespace COM3D2.StoryUnLock.Plugin
                         continue;
                     }
 
-                    StoryUnLock.myLog.LogMessage("Trophy"
-                    , item.id
-                    , item.name
-                    , item.type
-                    , item.rarity
-                    , item.maidPoint
-                    , item.infoText
-                    , item.bonusText
-                    );
+                    //StoryUnLock.myLog.LogMessage("Trophy"
+                    //, item.id
+                    //, item.name
+                    //, item.type
+                    //, item.rarity
+                    //, item.maidPoint
+                    //, item.infoText
+                    //, item.bonusText
+                    //);
                     GameMain.Instance.CharacterMgr.status.AddHaveTrophy(item.id);
                 }
             }
@@ -807,7 +803,7 @@ namespace COM3D2.StoryUnLock.Plugin
             }
 
 
-            StoryUnLock.myLog.LogDarkBlue("SetAllPlayerStatus ed");
+            StoryUnLock.myLog.LogMessage("SetAllPlayerStatus ed");
         }
 
         public static void SetMaidAll(Maid maid)
@@ -841,23 +837,23 @@ namespace COM3D2.StoryUnLock.Plugin
         public static void AddStockMaid()
         {
             Maid maid = GameMain.Instance.CharacterMgr.AddStockMaid();
-            PresetUtill.SetMaidRandPreset2(maid);
+            //PresetUtill.SetMaidRandPreset2(maid);
 
             if (maid == null)
             {
                 StoryUnLock.myLog.LogFatal("maid null");
             }
 
-            if (StoryUnLockGUI.rndPersonal)
+            if (StoryUnLock.rndPersonal)
             {
-                StoryUnLockGUI.selGridPersonal = PersonalUtill.SetPersonalRandom(maid);
+                StoryUnLock.selGridPersonal = PersonalUtill.SetPersonalRandom(maid);
             }
             else
             {
-                PersonalUtill.SetPersonal(maid, StoryUnLockGUI.selGridPersonal);
+                PersonalUtill.SetPersonal(maid, StoryUnLock.selGridPersonal);
             }
             
-            switch (StoryUnLockGUI.selGridContract)
+            switch (StoryUnLock.selGridContract)
             {
                 case 0:
                     break;
@@ -868,7 +864,7 @@ namespace COM3D2.StoryUnLock.Plugin
                     maid.status.contract = Contract.Free;
                     break;
                 case 3:
-                    maid.status.contract = MyUtill.RandomEnum(Contract.Trainee);
+                    maid.status.contract = RandomEnum(Contract.Trainee);
                     break;
             }
             /**/
@@ -882,5 +878,18 @@ namespace COM3D2.StoryUnLock.Plugin
         }
 
 
+
+        public static T RandomEnum<T>(params T[] args)
+        {
+            //Array values = Enum.GetValues(typeof(T));
+            List<T> lst = ((T[])Enum.GetValues(typeof(T))).ToList();
+            for (int i = 0; i < args.Length; i++)
+            {
+                lst.Remove(args[i]);
+            }
+            return lst[UnityEngine.Random.Range(0, lst.Count)];
+            //return lst[new Random().Next(0, lst.Count)];
+            //return (T)values.GetValue(new Random().Next(0, values.Length));
+        }
     }
 }

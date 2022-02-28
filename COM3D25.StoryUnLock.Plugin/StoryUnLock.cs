@@ -1,17 +1,19 @@
 ﻿using BepInEx;
 using BepInEx.Configuration;
-using COM3D2.LillyUtill;
+using BepInEx.Logging;
 using COM3D2API;
 using HarmonyLib;
-using Newtonsoft.Json;
+using LillyUtill.MyMaidActive;
+using LillyUtill.MyWindowRect;
+using MaidStatus;
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 
 namespace COM3D2.StoryUnLock.Plugin
 {
@@ -31,16 +33,36 @@ namespace COM3D2.StoryUnLock.Plugin
         //private ConfigEntry<BepInEx.Configuration.KeyboardShortcut> ShowCounter;
 
         Harmony harmony;
+        public static ManualLogSource myLog;
+        public static ConfigFile config;
 
         public static StoryUnLock sample;
 
-        public static MyLog myLog = new MyLog(MyAttribute.PLAGIN_NAME);
+        //public static MyLog myLog = new MyLog(MyAttribute.PLAGIN_NAME);
 
-        public static ConfigFile config;
+
+        public static ConfigEntry<bool> btnLock;
+        public static ConfigEntry<bool> personalRandom;
+        public static ConfigEntry<bool> statusAuto;
+        public static ConfigEntry<bool> newMaid;
+        public static ConfigEntry<bool> movMaid;
+
+        public static bool rndPersonal = true;
+        public static bool rndContract = false;
+        public static int selGridPersonal = 0;
+        public static int selGridContract = 0;
+
+        public static string[] PersonalNames;//= new string[] { "radio1", "radio2", "radio3" };
+        public static string[] ContractNames;//= new string[] { "radio1", "radio2", "radio3" };
+        private int seleted;
+
+        public static WindowRectUtill myWindowRect;
 
         public StoryUnLock()
         {
             sample = this;
+            config = Config;
+            myLog = Logger;
         }
 
         /// <summary>
@@ -48,23 +70,30 @@ namespace COM3D2.StoryUnLock.Plugin
         /// </summary>
         public void Awake()
         {
-            StoryUnLock.myLog.LogMessage("Awake");
-            config = Config;
+            //StoryUnLock.myLog.LogMessage("Awake");
+
             StoryUnLockUtill.init(Config);
 
             // 단축키 기본값 설정
             //ShowCounter = Config.Bind("KeyboardShortcut", "KeyboardShortcut0", new BepInEx.Configuration.KeyboardShortcut(KeyCode.Alpha9, KeyCode.LeftControl));
 
-            //SampleConfig.Install(Sample.myLog.log);
-
             // 기어 메뉴 추가. 이 플러그인 기능 자체를 멈추려면 enabled 를 꺽어야함. 그러면 OnEnable(), OnDisable() 이 작동함
+            btnLock = config.Bind("GUI", "btn Lock", false);
+            personalRandom = config.Bind("AddStockMaid", "personalRandom", true);
+            statusAuto = config.Bind("AddStockMaid", "_SetMaidStatusOnOff", false);
+            newMaid = config.Bind("AddStockMaid", "newMaid", false);
+            movMaid = config.Bind("AddStockMaid", "movMaid", false);
+
+            ContractNames = new string[] { "Trainee", "Exclusive", "Free", "Random" };
+
+            myWindowRect = new WindowRectUtill(Config, MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, "SU");
         }
 
 
 
         public void OnEnable()
         {
-            StoryUnLock.myLog.LogMessage("OnEnable");
+            // StoryUnLock.myLog.LogMessage("OnEnable");
 
             SceneManager.sceneLoaded += this.OnSceneLoaded;
 
@@ -73,6 +102,9 @@ namespace COM3D2.StoryUnLock.Plugin
 
         }
 
+
+        /*
+        */
         /// <summary>
         /// 게임 실행시 한번만 실행됨
         /// </summary>
@@ -82,9 +114,26 @@ namespace COM3D2.StoryUnLock.Plugin
 
             //SampleGUI.Install(gameObject, Config);
 
-            StoryUnLockGUI.Install<StoryUnLockGUI>(gameObject, Config, MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, "SU", Properties.Resources.icon, new BepInEx.Configuration.KeyboardShortcut(KeyCode.Alpha9, KeyCode.LeftControl));
+            //StoryUnLockGUI.Install<StoryUnLockGUI>(gameObject, Config, MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, "SU", Properties.Resources.icon, new BepInEx.Configuration.KeyboardShortcut(KeyCode.Alpha9, KeyCode.LeftControl));
 
-            //SystemShortcutAPI.AddButton(MyAttribute.PLAGIN_FULL_NAME, new Action(delegate () { enabled = !enabled; }), MyAttribute.PLAGIN_NAME, MyUtill.ExtractResource(BepInPluginSample.Properties.Resources.icon));
+            
+            SystemShortcutAPI.AddButton(
+                MyAttribute.PLAGIN_FULL_NAME
+                , new Action(delegate ()
+                { // 기어메뉴 아이콘 클릭시 작동할 기능
+                    myWindowRect.IsGUIOn = !myWindowRect.IsGUIOn;
+                })
+                , MyAttribute.PLAGIN_NAME // 표시될 툴팁 내용                               
+                , Properties.Resources.icon);// 표시될 아이콘
+
+            try
+            {
+                PersonalNames = Personal.GetAllDatas(true).Select((x) => x.uniqueName).ToArray();
+            }
+            catch (Exception e)
+            {
+                StoryUnLock.myLog.LogError($"StoryUnLockGUI.Start , {PersonalNames.Length} , {e}");
+            }
         }
         public static string scene_name = string.Empty;
 
@@ -95,49 +144,133 @@ namespace COM3D2.StoryUnLock.Plugin
             //  scene.buildIndex 는 쓰지 말자 제발
             scene_name = scene.name;
         }
-        /*
-        */
-        /*
-        public void FixedUpdate()
+        private void OnGUI()
         {
+            if (!myWindowRect.IsGUIOn)
+                return;
+
+            //GUI.skin.window = ;
+
+            //myWindowRect.WindowRect = GUILayout.Window(windowId, myWindowRect.WindowRect, WindowFunction, MyAttribute.PLAGIN_NAME + " " + ShowCounter.Value.ToString(), GUI.skin.box);
+            // 별도 창을 띄우고 WindowFunction 를 실행함. 이건 스킨 설정 부분인데 따로 공부할것
+            myWindowRect.WindowRect = GUILayout.Window(myWindowRect.winNum, myWindowRect.WindowRect, WindowFunction, "", GUI.skin.box);
+        }
+
+        private Vector2 scrollPosition;
+
+        private void WindowFunction(int id)
+        {
+            GUI.enabled = true; // 기능 클릭 가능
+
+            GUILayout.BeginHorizontal();// 가로 정렬
+            // 라벨 추가
+            GUILayout.Label(myWindowRect.windowName, GUILayout.Height(20));
+            // 안쓰는 공간이 생기더라도 다른 기능으로 꽉 채우지 않고 빈공간 만들기
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20))) { myWindowRect.IsOpen = !myWindowRect.IsOpen; }
+            if (GUILayout.Button("x", GUILayout.Width(20), GUILayout.Height(20))) { myWindowRect.IsGUIOn = false; }
+            GUI.changed = false;
+
+            GUILayout.EndHorizontal();// 가로 정렬 끝
+
+            if (!myWindowRect.IsOpen)
+            {
+
+            }
+            else
+            {
+                scrollPosition = GUILayout.BeginScrollView(scrollPosition, false, true);
+
+                #region 여기에 내용 작성
+
+                WindowFunctionBody(id);
+
+                #endregion
+
+                GUILayout.EndScrollView();
+            }
+            GUI.enabled = true;
+            GUI.DragWindow(); // 창 드레그 가능하게 해줌. 마지막에만 넣어야함
+        }
+
+        private void WindowFunctionBody(int id)
+        {
+            GUILayout.Label("etc");
+            if (GUILayout.Button("Maid Personal cnt")) StoryUnLockUtill.MaidPersonalCnt();
+
+            GUILayout.Label("maid select");
+            // 여기는 출력된 메이드들 이름만 가져옴
+            // seleted 가 이름 위치 번호만 가져온건데
+            seleted = MaidActiveUtill.SelectionGrid(seleted);
+
+            if (GUILayout.Button("Maid Setting")) StoryUnLockUtill.SetMaidStatusAll(seleted);
+            GUILayout.Label("메이드 고용시");
+            if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
+            if (GUILayout.Button("Maid cheat " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
+
+            GUILayout.Label("메이드 에딧 종료시 이벤트");
+            if (GUILayout.Button("New Maid " + newMaid.Value)) newMaid.Value = !newMaid.Value;
+            if (GUILayout.Button("Mov Maid " + movMaid.Value)) movMaid.Value = !movMaid.Value;
+
+
+            //base.WindowFunctionBody(id);
+            GUILayout.Label("All Maid Setting");
+
+            GUI.enabled = btnLock.Value;
+            if (GUILayout.Button("Work Setting")) StoryUnLockUtill.SetWorkAll();
+            if (GUILayout.Button("Scenario Setting")) StoryUnLockUtill.SetScenarioDataAll();
+            if (GUILayout.Button("EmpireLife Setting")) StoryUnLockUtill.SetEmpireLifeModeDataAll();
+            if (GUILayout.Button("JobClass Setting")) StoryUnLockUtill.SetMaidJobClassAll();
+            if (GUILayout.Button("YotogiClass Setting")) StoryUnLockUtill.SetMaidYotogiClassAll();
+            if (GUILayout.Button("Maid skill Setting")) StoryUnLockUtill.SetMaidSkillAll();
+            GUI.enabled = true;
+            if (GUILayout.Button("MaidStatus Setting")) StoryUnLockUtill.SetMaidStatusAll();
+
+            GUILayout.Label("All Maid Flag Remove");
+            //if (GUILayout.Button("Remove ErrFlag")) StoryUnLockUtill.RemoveErrFlagAll();
+            if (GUILayout.Button("Remove Flag")) StoryUnLockUtill.RemoveFlagAll();
+            if (GUILayout.Button("Remove EventEndFlag")) StoryUnLockUtill.RemoveEventEndFlagAll();
+
+            GUILayout.Label("Player");
+            if (GUILayout.Button("FreeMode Flag Setting")) StoryUnLockUtill.SetFreeModeItemEverydayAll();
+            if (GUILayout.Button("Yotogi Setting")) StoryUnLockUtill.SetYotogiAll(); // player
+            if (GUILayout.Button("PlayerStatus Setting")) StoryUnLockUtill.SetAllPlayerStatus();
+
+            GUILayout.Label("Scene Maid Management");
+            //GUI.enabled = SceneManager.GetActiveScene().name == "SceneMaidManagement";
+            GUI.enabled = StoryUnLock.scene_name == "SceneMaidManagement";
+            if (GUILayout.Button("Select Maid All Setting")) StoryUnLockUtill.SetMaidAll(StoryUnLockPatch.selectMaid);
+            //if (GUILayout.Button("선택 메이드 플레그 제거")) FlagUtill.RemoveEventEndFlag(true);
+            //if (GUILayout.Button("HeroineType.Original")) StoryUnLockUtill.SetHeroineType(HeroineType.Original);
+            //if (GUILayout.Button("HeroineType.Transfer")) StoryUnLockUtill.SetHeroineType(HeroineType.Transfer);
+            GUI.enabled = true;
+
+            GUILayout.Label("Maid Add");
+            if (GUILayout.Button("Maid add")) StoryUnLockUtill.AddStockMaid();
+            if (GUILayout.Button("Maid add * 10")) for (int i = 0; i < 10; i++) { StoryUnLockUtill.AddStockMaid(); }
+            if (GUILayout.Button("Maid add * 50")) for (int i = 0; i < 50; i++) { StoryUnLockUtill.AddStockMaid(); }
+            GUILayout.Label("Maid Add Personal");
+            if (GUILayout.Button("Personal Rand " + rndPersonal)) rndPersonal = !rndPersonal;
+            if (!rndPersonal)
+            {
+                selGridPersonal = GUILayout.SelectionGrid(selGridPersonal, PersonalNames, 3);
+            }
+
+            GUILayout.Label("Contract");
+            if (GUILayout.Button("Contract Rand " + rndContract + " " + ContractNames[selGridContract])) rndContract = !rndContract;
+            if (!rndContract)
+            {
+                selGridContract = GUILayout.SelectionGrid(selGridContract, ContractNames, 2);
+            }
+            /**/
 
         }
-        */
-        /*
-        public void Update()
-        {
-            //if (ShowCounter.Value.IsDown())
-            //{
-            //    Sample.myLog.LogMessage("IsDown", ShowCounter.Value.Modifiers, ShowCounter.Value.MainKey);
-            //}
-            //if (ShowCounter.Value.IsPressed())
-            //{
-            //    Sample.myLog.LogMessage("IsPressed", ShowCounter.Value.Modifiers, ShowCounter.Value.MainKey);
-            //}
-            //if (ShowCounter.Value.IsUp())
-            //{
-            //    Sample.myLog.LogMessage("IsUp", ShowCounter.Value.Modifiers, ShowCounter.Value.MainKey);
-            //}
-        }
-        */
-        /*
-        public void LateUpdate()
-        {
-
-        }
-        */
-        
-        /*
-        public void OnGUI()
-        {
-          
-        }
-        */
 
 
         public void OnDisable()
         {
-            StoryUnLock.myLog.LogMessage("OnDisable");
+            //StoryUnLock.myLog.LogMessage("OnDisable");
 
             SceneManager.sceneLoaded -= this.OnSceneLoaded;
 

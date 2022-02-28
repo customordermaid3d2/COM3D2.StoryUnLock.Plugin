@@ -1,6 +1,7 @@
-﻿using COM3D2.LillyUtill;
+﻿
 using FacilityFlag;
 using HarmonyLib;
+using MaidStatus;
 using scoutmode;
 using System;
 using System.Collections.Generic;
@@ -46,55 +47,6 @@ namespace COM3D2.StoryUnLock.Plugin
             }
         }
 
-        //--------------------------------------------------
-        /*
-        static Harmony instance;
-
-        public static void Main()
-        {
-            instance = Harmony.CreateAndPatchAll(typeof(AddScriptsSample));
-        }
-
-        public static void Unload()
-        {
-            if (instance != null)
-                instance.UnpatchAll(instance.Id);
-            instance = null;
-        }
-
-        [HarmonyPatch(typeof(FreeModeItemEveryday), "CreateItemEverydayList")]
-        [HarmonyPostfix]
-        //public static List<FreeModeItemEveryday> CreateItemEverydayList(FreeModeItemEveryday.ScnearioType type, MaidStatus.Status maidStatus = null)
-        public static void CreateItemEverydayList(ref List<FreeModeItemEveryday> __result)
-        {
-            Debug.Log("- - - - - - - - - - - - - - - ");
-            Debug.Log($"cnt : {__result.Count}");
-            foreach (var item in __result)
-            {
-                Debug.Log($"{item.is_enabled} , {item.title}");                
-            }
-            Debug.Log("- - - - - - - - - - - - - - - ");
-        }
-
-        [HarmonyPatch(typeof(FreeModeItemEveryday), "IsEnabledFlag")]
-        [HarmonyPrefix]
-        //public static bool IsEnabledFlag(FreeModeItemEveryday.ScnearioType type, string flag_name)
-        public static bool IsEnabledFlag(ref bool __result)
-        {
-            __result = true;
-            return false;
-        }
-        
-        [HarmonyPatch(typeof(FreeModeItemLifeMode), "is_enabled" , MethodType.Getter)]
-        [HarmonyPrefix]
-        //public static bool IsEnabledFlag(FreeModeItemEveryday.ScnearioType type, string flag_name)
-        public static bool is_enabled(ref bool __result)
-        {
-            __result = true;
-            return false;
-        }
-        */
-
         /// <summary>
         /// 에딧 종료
         /// </summary>
@@ -109,12 +61,12 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 return;
             }
-            StoryUnLock.myLog.LogMessage("SceneEdit.OnEndScene");
-            if (StoryUnLockGUI.newMaid.Value)
+            //StoryUnLock.myLog.LogMessage("SceneEdit.OnEndScene");
+            if (StoryUnLock.newMaid.Value)
             {
                 GameMain.Instance.CMSystem.SetTmpGenericFlag("新規雇用メイド", 1);
             }
-            else if (StoryUnLockGUI.movMaid.Value)
+            else if (StoryUnLock.movMaid.Value)
             {
                 GameMain.Instance.CMSystem.SetTmpGenericFlag("移籍メイド", 1);
             }
@@ -138,13 +90,13 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 return;
             }
-            if (StoryUnLockGUI.personalRandom.Value)
+            if (StoryUnLock.personalRandom.Value)
             {
-                PersonalUtill.SetPersonalRandom(___m_maid);
+                SetPersonalRandom(___m_maid);
             }
-            if (StoryUnLockGUI.statusAuto.Value)
+            if (StoryUnLock.statusAuto.Value)
             {
-                StoryUnLock.myLog.LogMessage("SceneEdit.OnCompleteFadeIn");
+                //StoryUnLock.myLog.LogMessage("SceneEdit.OnCompleteFadeIn");
                 //GameMain.Instance.CharacterMgr.GetMaid(0);
                 
                 StoryUnLockUtill.SetMaidStatus(___m_maid);
@@ -153,6 +105,20 @@ namespace COM3D2.StoryUnLock.Plugin
                 StoryUnLockUtill.SetMaidSkill(___m_maid);
             }
             isNewMaid = false;
+        }
+
+        public static void SetPersonalRandom(Maid maid)
+        {
+            if (maid is null)
+            {
+                return;
+            }
+            var p = Personal.GetAllDatas(true);
+            int a = UnityEngine.Random.Range(0, p.Count);
+            Personal.Data data = p[a];
+            maid.status.SetPersonal(data);
+            maid.status.firstName = data.uniqueName;
+            return ;
         }
     }
 }
