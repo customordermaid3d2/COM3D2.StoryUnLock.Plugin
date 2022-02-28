@@ -33,7 +33,7 @@ namespace COM3D2.StoryUnLock.Plugin
         //private ConfigEntry<BepInEx.Configuration.KeyboardShortcut> ShowCounter;
 
         Harmony harmony;
-        public static ManualLogSource myLog;
+        public static ManualLogSource Log;
         public static ConfigFile config;
 
         public static StoryUnLock sample;
@@ -62,7 +62,7 @@ namespace COM3D2.StoryUnLock.Plugin
         {
             sample = this;
             config = Config;
-            myLog = Logger;
+            Log = Logger;
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace COM3D2.StoryUnLock.Plugin
         /// </summary>
         public void Start()
         {
-            StoryUnLock.myLog.LogMessage("Start");
+            StoryUnLock.Log.LogMessage("Start");
 
             //SampleGUI.Install(gameObject, Config);
 
@@ -132,7 +132,7 @@ namespace COM3D2.StoryUnLock.Plugin
             }
             catch (Exception e)
             {
-                StoryUnLock.myLog.LogError($"StoryUnLockGUI.Start , {PersonalNames.Length} , {e}");
+                StoryUnLock.Log.LogError($"StoryUnLockGUI.Start , {PersonalNames.Length} , {e}");
             }
         }
         public static string scene_name = string.Empty;
@@ -204,7 +204,7 @@ namespace COM3D2.StoryUnLock.Plugin
             // seleted 가 이름 위치 번호만 가져온건데
             seleted = MaidActiveUtill.SelectionGrid(seleted);
 
-            if (GUILayout.Button("Maid Setting")) StoryUnLockUtill.SetMaidStatusAll(seleted);
+            if (GUILayout.Button("Maid All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
             GUILayout.Label("메이드 고용시");
             if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
             if (GUILayout.Button("Maid cheat " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
@@ -217,20 +217,24 @@ namespace COM3D2.StoryUnLock.Plugin
             //base.WindowFunctionBody(id);
             GUILayout.Label("All Maid Setting");
 
-            GUI.enabled = btnLock.Value;
+            if (GUILayout.Button("Set Slave")) StoryUnLockKs.SetSlaveStockMaids();
+            if (GUILayout.Button("Set Married")) StoryUnLockKs.SetMarriedStockMaids();
+            if (GUILayout.Button("Set PMDモード＿開始")) StoryUnLockKs.SetPMDStockMaids();
             if (GUILayout.Button("Work Setting")) StoryUnLockUtill.SetWorkAll();
-            if (GUILayout.Button("Scenario Setting")) StoryUnLockUtill.SetScenarioDataAll();
             if (GUILayout.Button("EmpireLife Setting")) StoryUnLockUtill.SetEmpireLifeModeDataAll();
-            if (GUILayout.Button("JobClass Setting")) StoryUnLockUtill.SetMaidJobClassAll();
             if (GUILayout.Button("YotogiClass Setting")) StoryUnLockUtill.SetMaidYotogiClassAll();
+            if (GUILayout.Button("JobClass Setting")) StoryUnLockUtill.SetMaidJobClassAll();
             if (GUILayout.Button("Maid skill Setting")) StoryUnLockUtill.SetMaidSkillAll();
-            GUI.enabled = true;
             if (GUILayout.Button("MaidStatus Setting")) StoryUnLockUtill.SetMaidStatusAll();
+            GUI.enabled = btnLock.Value;
+            if (GUILayout.Button("Scenario Event End")) StoryUnLockUtill.ScenarioPlayAll();
+            if (GUILayout.Button("Scenario Event End reset")) StoryUnLockUtill.SetScenarioDataAllReset();
 
             GUILayout.Label("All Maid Flag Remove");
             //if (GUILayout.Button("Remove ErrFlag")) StoryUnLockUtill.RemoveErrFlagAll();
             if (GUILayout.Button("Remove Flag")) StoryUnLockUtill.RemoveFlagAll();
             if (GUILayout.Button("Remove EventEndFlag")) StoryUnLockUtill.RemoveEventEndFlagAll();
+            GUI.enabled = true;
 
             GUILayout.Label("Player");
             if (GUILayout.Button("FreeMode Flag Setting")) StoryUnLockUtill.SetFreeModeItemEverydayAll();

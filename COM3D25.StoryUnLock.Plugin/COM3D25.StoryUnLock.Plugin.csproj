@@ -100,6 +100,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="StoryUnLock.cs" />
+    <Compile Include="StoryUnLockKs.cs" />
     <Compile Include="StoryUnLockPatch.cs" />
     <Compile Include="StoryUnLockUtill.cs" />
   </ItemGroup>
