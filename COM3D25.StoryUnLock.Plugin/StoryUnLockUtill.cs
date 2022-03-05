@@ -105,7 +105,7 @@ namespace COM3D2.StoryUnLock.Plugin
         }
 
 
-        static bool isRunSetScenarioDataAll = false;
+        //static bool isRunSetScenarioDataAll = false;
 
         internal static void SetScenarioDataAllReset()
         {
@@ -885,6 +885,7 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 PersonalUtill.SetPersonal(maid, StoryUnLock.selGridPersonal);
             }
+            StoryUnLock.Log.LogMessage($"{ maid.status.fullNameEnStyle} , {maid.status.personal.id} , {maid.status.personal.replaceText} , {maid.status.personal.uniqueName}");
             
             switch (StoryUnLock.selGridContract)
             {
