@@ -17,7 +17,7 @@
 
 COM3D2\BepInEx\plugins
 
-![2021-07-27 10 27 09](https://user-images.githubusercontent.com/20321215/127080301-252657e7-dc6d-48d5-a4f4-0e01dddd6736.png)
+![2022-03-05 16 18 16](https://user-images.githubusercontent.com/20321215/156872978-32b741c3-77b1-4057-bba3-8da6b5c94bf7.png)
 
 
 # 필요한거
