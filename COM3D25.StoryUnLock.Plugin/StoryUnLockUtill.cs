@@ -137,71 +137,21 @@ namespace COM3D2.StoryUnLock.Plugin
             }
         }
 
-        /*
-        internal static void SetScenarioDataAll()
+        internal static void SetMaidMainStory(int seleted)
         {
-
-            if (isRunSetScenarioDataAll)
-                return;
-
-            Task.Factory.StartNew(() =>
+            Maid gmaid = MaidActiveUtill.GetMaid(seleted);
+            foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-                isRunSetScenarioDataAll = true;
-
-                StoryUnLock.Log.LogMessage("SetScenarioDataAll. start");
-
-                // 병렬 처리
-                foreach (var scenarioData in GameMain.Instance.ScenarioSelectMgr.GetAllScenarioData())
+                if (maid.boMAN || maid.boNPC || maid.status.heroineType == HeroineType.Sub)
                 {
-
-                    // MyLog.LogMessageS(".SetScenarioDataAll:" + scenarioData.ID + " , " + scenarioData.ScenarioScript + " , " + scenarioData.IsPlayable + " , " + scenarioData.Title); ;
-                    if (scenarioData.IsPlayable)
-                    {
-                        foreach (var maid in scenarioData.GetEventMaidList())
-                        {
-                            if (maid.status.heroineType == HeroineType.Sub)                            
-                                continue;
-
-                            if (maid.boNPC || maid.boMAN)
-                                continue;
-
-                            bool b = maid.status.GetEventEndFlag(scenarioData.ID);
-                            if (!b)
-                            {
-                                maid.status.SetEventEndFlag(scenarioData.ID, true);
-                                if (scenarioData.ScenarioScript.Contains("_Marriage"))
-                                {
-                                    maid.status.specialRelation = SpecialRelation.Married;
-                                    maid.status.relation = Relation.Lover;
-                                    maid.status.OldStatus.isMarriage = true;
-                                    maid.status.OldStatus.isNewWife = true;
-                                }
-                            }
-
-                        }
-                    }
-                    try
-                    {
-                    }
-                    catch (Exception e)
-                    {
-                        StoryUnLock.Log.LogError("ScenarioDataUtill.SetScenarioDataAll2 : " + e.ToString());
-                    }
+                    continue;
                 }
-                try
-                {
-                }
-                catch (Exception e)
-                {
-                    StoryUnLock.Log.LogError("ScenarioDataUtill.SetScenarioDataAll1 : " + e.ToString());
-                }
-
-                StoryUnLock.Log.LogMessage("SetScenarioDataAll. end");
-
-                isRunSetScenarioDataAll = false;
-            });
+                if (maid.status.personal.id == gmaid.status.personal.id)
+                    maid.status.mainChara = false;
+            }
+            gmaid.status.mainChara = true;
         }
-        */
+
         internal static void MaidPersonalCnt()
         {            
             Dictionary<int, int> d = new Dictionary<int, int>();
@@ -494,11 +444,6 @@ namespace COM3D2.StoryUnLock.Plugin
 
             }
 
-            //if (true)
-            //{
-            //    //maid.status.contract = Contract.;// 적용 방식 고민 필요
-            //}
-
             //maid.status.specialRelation = SpecialRelation.Married;// 되는건가?
             maid.status.additionalRelation = AdditionalRelation.Slave;// 되는건가?
 
@@ -528,116 +473,6 @@ namespace COM3D2.StoryUnLock.Plugin
 
 
         }
-
-        /*
-        public static void RemoveErrFlagAll()
-        {
-            ReadCSVAll();
-            foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
-            {
-                foreach (var item in eventEndFlags)
-                {
-                    maid.status.RemoveEventEndFlag(item.Key);
-                }
-                foreach (var item in flags)
-                {
-                    maid.status.RemoveFlag(item.Key);
-                }
-                foreach (var item in oldflags)
-                {
-                    maid.status.OldStatus.RemoveFlag(item.Key);
-                }
-            }
-
-        }
-        public static Dictionary<string, int> oldflags = new Dictionary<string, int>();
-        public static Dictionary<string, int> flags = new Dictionary<string, int>();
-        public static Dictionary<int, bool> eventEndFlags = new Dictionary<int, bool>();
-
-        private static void ReadCSVAll()
-        {
-            ReadCSV("oldflags", ref oldflags);
-            ReadCSV("flags", ref flags);
-            ReadCSV("eventEndFlags", ref eventEndFlags);
-        }
-
-        public static void ReadCSV(string file, ref Dictionary<string, int> list)
-        {
-            string filePath = Path.GetDirectoryName(StoryUnLock.config.ConfigFilePath) + "/" + file + ".csv";
-            if (!File.Exists(filePath))
-            {
-                StoryUnLock.myLog.LogMessage("ReadCSV make : " + filePath);
-
-                using StreamWriter sw = File.CreateText(filePath);
-                sw.WriteLine("# flag name,int value");
-                sw.WriteLine("// キャラクターパックEXメイド,0");
-                return;
-            }
-            list.Clear();
-            using StreamReader sr = new StreamReader(filePath);
-            string line;
-            while ((line = sr.ReadLine()) != null)
-            {
-                StoryUnLock.myLog.LogDebug("ReadCSV read : " + line);
-                if (line.StartsWith("//") || line.StartsWith("#"))
-                {
-                    continue;
-                }
-                var values = line.Split(',');
-                if (int.TryParse(values[1], out int j))
-                //if (list.ContainsKey(values[0]))
-                //{
-                //    list[values[0]] = j;
-                //}
-                //else
-                {
-                    list.Add(values[0], j);
-                }
-                else
-                    StoryUnLock.myLog.LogWarning("ReadCSV error : " + line);
-            }
-        }
-
-        public static void ReadCSV(string file, ref Dictionary<int, bool> list)
-        {
-            string filePath = Path.GetDirectoryName(Lilly.customFile.ConfigFilePath) + "/" + file + ".csv";
-            if (!File.Exists(filePath))
-            {
-                StoryUnLock.myLog.LogMessage("ReadCSV make : " + filePath);
-
-                using StreamWriter sw = File.CreateText(filePath);
-                sw.WriteLine("# flag id,bool value");
-                sw.WriteLine("// flag id,bool value");
-                sw.WriteLine("// 1," + false);
-                sw.WriteLine("// 2," + true);
-                return;
-            }
-            list.Clear();
-            using StreamReader sr = new StreamReader(filePath);
-            string line;
-            while ((line = sr.ReadLine()) != null)
-            {
-                StoryUnLock.myLog.LogDebug("ReadCSV read : " + line);
-                if (line.StartsWith("//") || line.StartsWith("#"))
-                {
-                    continue;
-                }
-                var values = line.Split(',');
-                if (int.TryParse(values[0], out int j) && bool.TryParse(values[1], out bool k))
-                //if (list.ContainsKey(j))
-                //{
-                //    list[j] = k;
-                //}
-                //else
-                {
-                    list.Add(j, k);
-                }
-
-                else
-                    StoryUnLock.myLog.LogWarning("ReadCSV error : " + line);
-            }
-        }
-        */
 
         public static void RemoveFlagAll()
         {

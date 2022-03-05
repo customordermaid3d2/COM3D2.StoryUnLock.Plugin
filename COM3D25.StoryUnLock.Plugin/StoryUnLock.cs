@@ -204,7 +204,10 @@ namespace COM3D2.StoryUnLock.Plugin
             // seleted 가 이름 위치 번호만 가져온건데
             seleted = MaidActiveUtill.SelectionGrid(seleted);
 
-            if (GUILayout.Button("Maid All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
+            if (GUILayout.Button("All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
+            if (GUILayout.Button("Main Story")) StoryUnLockUtill.SetMaidMainStory(seleted);
+
+
             GUILayout.Label("메이드 고용시");
             if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
             if (GUILayout.Button("Maid cheat " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
