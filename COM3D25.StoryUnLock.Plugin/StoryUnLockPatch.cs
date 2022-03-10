@@ -74,16 +74,40 @@ namespace COM3D2.StoryUnLock.Plugin
 
         private static bool isNewMaid;
 
-        [HarmonyPostfix]
         [HarmonyPatch(typeof(ScoutMainScreenManager), "AddScoutMaid")]
         [HarmonyPatch(typeof(MaidManagementMain), "Employment")]
+        [HarmonyPrefix]
         public static void NewMaid()
         {
             isNewMaid = true;
+            StoryUnLock.Log.LogMessage($"isNewMaid {isNewMaid}");
         }
 
-        [HarmonyPatch(typeof(SceneEdit), "OnCompleteFadeIn")]
+        [HarmonyPatch(typeof(CharacterMgr), "AddStockMaid")]
         [HarmonyPostfix]
+        public static void AddStockMaid(Maid __result)
+        {
+            if (!isNewMaid)
+            {
+                return;
+            }
+            if (StoryUnLock.VoicePitch.Value)
+            {
+                StoryUnLockUtill.SetVoicePitch(__result);
+            }
+        }
+
+        /*
+        [HarmonyPatch(typeof(SceneEdit), "Start")]
+        [HarmonyPrefix]
+        public static void Start(Maid ___m_maid)
+        {
+
+        }
+        */
+
+        [HarmonyPatch(typeof(SceneEdit), "OnCompleteFadeIn")]
+        [HarmonyPrefix]
         public static void OnCompleteFadeIn(Maid ___m_maid) // Maid ___m_maid,SceneEdit __instance
         {
             if (!isNewMaid)
@@ -93,10 +117,6 @@ namespace COM3D2.StoryUnLock.Plugin
             if (StoryUnLock.personalRandom.Value)
             {
                 SetPersonalRandom(___m_maid);
-            }
-            if (StoryUnLock.VoicePitch.Value)
-            {
-                StoryUnLockUtill.SetVoicePitch(___m_maid);
             }
             if (StoryUnLock.statusAuto.Value)
             {

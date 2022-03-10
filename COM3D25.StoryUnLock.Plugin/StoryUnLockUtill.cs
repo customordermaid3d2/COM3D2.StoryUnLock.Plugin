@@ -698,6 +698,11 @@ namespace COM3D2.StoryUnLock.Plugin
             StoryUnLockPatch.selectMaid.status.heroineType = transfer;
         }
 
+        public static void SetVoicePitch(int seleted)
+        {            
+            SetVoicePitch(MaidActiveUtill.GetMaid(seleted));
+        }
+
         public static void SetVoicePitch(Maid maid)
         {
             if (maid is null)
@@ -705,6 +710,7 @@ namespace COM3D2.StoryUnLock.Plugin
                 return;
             }
             maid.VoicePitch = UnityEngine.Random.Range(0, 100);
+            StoryUnLock.Log.LogMessage($"SetVoicePitch {maid.VoicePitch}");
         }
 
 

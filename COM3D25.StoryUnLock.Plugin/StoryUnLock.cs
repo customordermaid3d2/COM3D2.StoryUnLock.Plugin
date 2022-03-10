@@ -208,13 +208,13 @@ namespace COM3D2.StoryUnLock.Plugin
 
             if (GUILayout.Button("All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
             if (GUILayout.Button("Main Story")) StoryUnLockUtill.SetMaidMainStory(seleted);
-            //if (GUILayout.Button("Main Voice Pitch ran")) StoryUnLockUtill.SetMaidMainStory(seleted);
+            if (GUILayout.Button("Main Voice Pitch rnd")) StoryUnLockUtill.SetVoicePitch(seleted);
 
 
             GUILayout.Label("메이드 고용시");
             if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
-            if (GUILayout.Button("Maid cheat rnd" + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
-            if (GUILayout.Button("Maid VoicePitch rnd" + VoicePitch.Value)) VoicePitch.Value = !VoicePitch.Value;
+            if (GUILayout.Button("Maid cheat rnd " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
+            if (GUILayout.Button("Maid VoicePitch rnd " + VoicePitch.Value)) VoicePitch.Value = !VoicePitch.Value;
 
             GUILayout.Label("메이드 에딧 종료시 이벤트");
             if (GUILayout.Button("New Maid " + newMaid.Value)) newMaid.Value = !newMaid.Value;
