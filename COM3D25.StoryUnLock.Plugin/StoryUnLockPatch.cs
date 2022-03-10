@@ -94,6 +94,10 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 SetPersonalRandom(___m_maid);
             }
+            if (StoryUnLock.VoicePitch.Value)
+            {
+                StoryUnLockUtill.SetVoicePitch(___m_maid);
+            }
             if (StoryUnLock.statusAuto.Value)
             {
                 //StoryUnLock.myLog.LogMessage("SceneEdit.OnCompleteFadeIn");
@@ -106,6 +110,7 @@ namespace COM3D2.StoryUnLock.Plugin
             }
             isNewMaid = false;
         }
+
 
         public static void SetPersonalRandom(Maid maid)
         {

@@ -44,6 +44,7 @@ namespace COM3D2.StoryUnLock.Plugin
         public static ConfigEntry<bool> btnLock;
         public static ConfigEntry<bool> personalRandom;
         public static ConfigEntry<bool> statusAuto;
+        public static ConfigEntry<bool> VoicePitch;
         public static ConfigEntry<bool> newMaid;
         public static ConfigEntry<bool> movMaid;
 
@@ -81,6 +82,7 @@ namespace COM3D2.StoryUnLock.Plugin
             btnLock = config.Bind("GUI", "btn Lock", false);
             personalRandom = config.Bind("AddStockMaid", "personalRandom", true);
             statusAuto = config.Bind("AddStockMaid", "_SetMaidStatusOnOff", false);
+            VoicePitch = config.Bind("AddStockMaid", "VoicePitch", true);
             newMaid = config.Bind("AddStockMaid", "newMaid", false);
             movMaid = config.Bind("AddStockMaid", "movMaid", false);
 
@@ -206,11 +208,13 @@ namespace COM3D2.StoryUnLock.Plugin
 
             if (GUILayout.Button("All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
             if (GUILayout.Button("Main Story")) StoryUnLockUtill.SetMaidMainStory(seleted);
+            //if (GUILayout.Button("Main Voice Pitch ran")) StoryUnLockUtill.SetMaidMainStory(seleted);
 
 
             GUILayout.Label("메이드 고용시");
             if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
-            if (GUILayout.Button("Maid cheat " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
+            if (GUILayout.Button("Maid cheat rnd" + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
+            if (GUILayout.Button("Maid VoicePitch rnd" + VoicePitch.Value)) VoicePitch.Value = !VoicePitch.Value;
 
             GUILayout.Label("메이드 에딧 종료시 이벤트");
             if (GUILayout.Button("New Maid " + newMaid.Value)) newMaid.Value = !newMaid.Value;
