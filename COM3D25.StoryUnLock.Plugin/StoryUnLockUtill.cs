@@ -760,7 +760,88 @@ namespace COM3D2.StoryUnLock.Plugin
 
         }
 
+        public static void MaidInfo()
+        {           
+            foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                StoryUnLock.Log.LogMessage($"{maid.status.fullNameEnStyle} " +
+                    $", {maid.status.personal.id} " +
+                    $", {maid.status.personal.replaceText} " +
+                    $", {maid.status.personal.uniqueName} " +
+                    $", {maid.status.heroineType}" +                    
+                    $", {maid.status.conditionText}" +
+                    $"");
+                // Masochis 深見 , 190 , M1 , Masochist , Original, 夜伽マスター
+                if (maid.status.subCharaStatus!=null)
+                {
+                    StoryUnLock.Log.LogMessage($"{maid.status.fullNameEnStyle} " +
+                        $", {maid.status.subCharaStatus.id} " +
+                        $", {maid.status.subCharaStatus.uniqueName} " +
+                        $", {maid.status.subCharaStatus.contract} " +
+                        $", {maid.status.subCharaStatus.contractText} " +
+                        $", {maid.status.subCharaStatus.personalText} " +
+                        $", {maid.status.subCharaStatus.relationText} " +
+                        $"");
+                    // ?-? 　 , 70 , キューコ , Exclusive , エキストラ , のじゃロリ , 腹ペコ
+                }
 
+            }
+            // f_maid.status.heroineType
+        }
+
+        public static void BanishmentMaidExtraAll()
+        {
+            /*
+            foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                if (maid.status.subCharaStatus?.contractText == "エキストラ")
+                {
+                    GameMain.Instance.CharacterMgr.BanishmentMaid(maid);
+                }
+            }
+            */
+            var maids = GameMain.Instance.CharacterMgr.GetStockMaidList().Where(maid => maid.status.subCharaStatus?.contractText == "エキストラ").ToArray();
+            foreach (var maid in maids)                
+            {
+                StoryUnLock.Log.LogMessage(
+                      $"{maid.status.fullNameEnStyle} " +
+                    $", {maid.status.subCharaStatus.id} " +
+                    $", {maid.status.subCharaStatus.uniqueName} " +
+                    $", {maid.status.subCharaStatus.contract} " +
+                    $", {maid.status.subCharaStatus.contractText} " +
+                    $", {maid.status.subCharaStatus.personalText} " +
+                    $", {maid.status.subCharaStatus.relationText} " +
+                    $"");
+                GameMain.Instance.CharacterMgr.BanishmentMaid(maid);
+            }
+        }
+        
+        public static void BanishmentMaidUniqueAll()
+        {
+            /*
+            foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                if (maid.status.subCharaStatus?.contractText == "ユニーク")
+                {
+                    GameMain.Instance.CharacterMgr.BanishmentMaid(maid);
+                }
+            }
+            */
+            var maids = GameMain.Instance.CharacterMgr.GetStockMaidList().Where(maid => maid.status.subCharaStatus?.contractText == "ユニーク").ToArray();
+            foreach (var maid in maids)
+            {
+                StoryUnLock.Log.LogMessage(
+                      $"{maid.status.fullNameEnStyle} " +
+                    $", {maid.status.subCharaStatus.id} " +
+                    $", {maid.status.subCharaStatus.uniqueName} " +
+                    $", {maid.status.subCharaStatus.contract} " +
+                    $", {maid.status.subCharaStatus.contractText} " +
+                    $", {maid.status.subCharaStatus.personalText} " +
+                    $", {maid.status.subCharaStatus.relationText} " +
+                    $"");
+                GameMain.Instance.CharacterMgr.BanishmentMaid(maid);
+            }
+        }
 
         public static T RandomEnum<T>(params T[] args)
         {

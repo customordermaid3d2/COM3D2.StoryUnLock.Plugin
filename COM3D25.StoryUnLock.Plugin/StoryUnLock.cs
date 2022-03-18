@@ -88,7 +88,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             ContractNames = new string[] { "Trainee", "Exclusive", "Free", "Random" };
 
-            myWindowRect = new WindowRectUtill(Config, MyAttribute.PLAGIN_FULL_NAME, MyAttribute.PLAGIN_NAME, "SU");
+            myWindowRect = new WindowRectUtill(WindowFunctionBody, Config, Logger,  MyAttribute.PLAGIN_NAME, "Story");
         }
 
 
@@ -148,16 +148,14 @@ namespace COM3D2.StoryUnLock.Plugin
         }
         private void OnGUI()
         {
+            myWindowRect.OnGUI();
+            /*
             if (!myWindowRect.IsGUIOn)
                 return;
-
-            //GUI.skin.window = ;
-
-            //myWindowRect.WindowRect = GUILayout.Window(windowId, myWindowRect.WindowRect, WindowFunction, MyAttribute.PLAGIN_NAME + " " + ShowCounter.Value.ToString(), GUI.skin.box);
-            // 별도 창을 띄우고 WindowFunction 를 실행함. 이건 스킨 설정 부분인데 따로 공부할것
             myWindowRect.WindowRect = GUILayout.Window(myWindowRect.winNum, myWindowRect.WindowRect, WindowFunction, "", GUI.skin.box);
+            */
         }
-
+        /*
         private Vector2 scrollPosition;
 
         private void WindowFunction(int id)
@@ -195,11 +193,12 @@ namespace COM3D2.StoryUnLock.Plugin
             GUI.enabled = true;
             GUI.DragWindow(); // 창 드레그 가능하게 해줌. 마지막에만 넣어야함
         }
-
+        */
         private void WindowFunctionBody(int id)
         {
             GUILayout.Label("etc");
             if (GUILayout.Button("Maid Personal cnt")) StoryUnLockUtill.MaidPersonalCnt();
+            if (GUILayout.Button("Maid info")) StoryUnLockUtill.MaidInfo();
 
             GUILayout.Label("maid select");
             // 여기는 출력된 메이드들 이름만 가져옴
@@ -274,39 +273,18 @@ namespace COM3D2.StoryUnLock.Plugin
             {
                 selGridContract = GUILayout.SelectionGrid(selGridContract, ContractNames, 2);
             }
-            /**/
 
+            GUILayout.Label("Maid Del");
+            if (GUILayout.Button("Maid Del Extra")) StoryUnLockUtill.BanishmentMaidExtraAll();
+            if (GUILayout.Button("Maid Del Unique")) StoryUnLockUtill.BanishmentMaidUniqueAll();
         }
 
 
         public void OnDisable()
         {
-            //StoryUnLock.myLog.LogMessage("OnDisable");
-
             SceneManager.sceneLoaded -= this.OnSceneLoaded;
 
             harmony.UnpatchSelf();// ==harmony.UnpatchAll(harmony.Id);
-            //harmony.UnpatchAll(); // 정대 사용 금지. 다름 플러그인이 패치한것까지 다 풀려버림
         }
-        /*
-        public void Pause()
-        {
-            Sample.myLog.LogMessage("Pause");
-        }
-
-        public void Resume()
-        {
-            Sample.myLog.LogMessage("Resume");
-        }
-        */
-        /*
-        /// <summary>
-        /// 게임 X 버튼 눌렀을때 반응
-        /// </summary>
-        public void OnApplicationQuit()
-        {
-            Sample.myLog.LogMessage("OnApplicationQuit");
-        }
-        */
     }
 }
