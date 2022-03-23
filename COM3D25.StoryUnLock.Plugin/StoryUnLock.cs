@@ -208,6 +208,7 @@ namespace COM3D2.StoryUnLock.Plugin
             if (GUILayout.Button("All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
             if (GUILayout.Button("Main Story")) StoryUnLockUtill.SetMaidMainStory(seleted);
             if (GUILayout.Button("Main Voice Pitch rnd")) StoryUnLockUtill.SetVoicePitch(seleted);
+            //if (GUILayout.Button("Main Voice Pitch rnd")) StoryUnLockUtill.SetVoicePitch(seleted);
 
 
             GUILayout.Label("메이드 고용시");
@@ -230,8 +231,8 @@ namespace COM3D2.StoryUnLock.Plugin
             if (GUILayout.Button("EmpireLife Setting")) StoryUnLockUtill.SetEmpireLifeModeDataAll();
             if (GUILayout.Button("YotogiClass Setting")) StoryUnLockUtill.SetMaidYotogiClassAll();
             if (GUILayout.Button("JobClass Setting")) StoryUnLockUtill.SetMaidJobClassAll();
-            if (GUILayout.Button("Maid skill Setting")) StoryUnLockUtill.SetMaidSkillAll();
-            if (GUILayout.Button("MaidStatus Setting")) StoryUnLockUtill.SetMaidStatusAll();
+            if (GUILayout.Button("Skill Setting")) StoryUnLockUtill.SetMaidSkillAll();
+            if (GUILayout.Button("Status Setting")) StoryUnLockUtill.SetMaidStatusAll();
             GUI.enabled = btnLock.Value;
             if (GUILayout.Button("Scenario Event End")) StoryUnLockUtill.ScenarioPlayAll();
             if (GUILayout.Button("Scenario Event End reset")) StoryUnLockUtill.SetScenarioDataAllReset();
@@ -248,9 +249,11 @@ namespace COM3D2.StoryUnLock.Plugin
             if (GUILayout.Button("PlayerStatus Setting")) StoryUnLockUtill.SetAllPlayerStatus();
 
             GUILayout.Label("Scene Maid Management");
+            GUILayout.Label("Select Maid");
             //GUI.enabled = SceneManager.GetActiveScene().name == "SceneMaidManagement";
             GUI.enabled = StoryUnLock.scene_name == "SceneMaidManagement";
-            if (GUILayout.Button("Select Maid All Setting")) StoryUnLockUtill.SetMaidAll(StoryUnLockPatch.selectMaid);
+            if (GUILayout.Button("All Setting")) StoryUnLockUtill.SetMaidAll(StoryUnLockPatch.selectMaid);
+            if (GUILayout.Button("Status Setting")) StoryUnLockUtill.SetMaidStatus(StoryUnLockPatch.selectMaid);
             //if (GUILayout.Button("선택 메이드 플레그 제거")) FlagUtill.RemoveEventEndFlag(true);
             //if (GUILayout.Button("HeroineType.Original")) StoryUnLockUtill.SetHeroineType(HeroineType.Original);
             //if (GUILayout.Button("HeroineType.Transfer")) StoryUnLockUtill.SetHeroineType(HeroineType.Transfer);

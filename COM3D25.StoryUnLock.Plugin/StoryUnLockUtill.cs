@@ -385,7 +385,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             foreach (var maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
             {
-
+                SetMaidStatus(maid);
             }
 
             StoryUnLock.Log.LogMessage("MaidStatusUtill.SetMaidStatusAll. end");
