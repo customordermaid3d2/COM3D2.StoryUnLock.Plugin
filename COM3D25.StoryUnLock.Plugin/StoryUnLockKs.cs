@@ -112,6 +112,11 @@ namespace COM3D2.StoryUnLock.Plugin
                     StoryUnLock.Log.LogMessage($"SetMarried { maid.status.fullNameEnStyle }");
                     maid.status.SetFlag("GP02＿プロポーズ済", 1);
                     maid.status.specialRelation = SpecialRelation.Married;
+                    if ( maid.status.OldStatus != null)
+                    {
+                        maid.status.OldStatus.isMarriage = true;
+                        maid.status.OldStatus.isNewWife=true;
+                    }
                 }
             }
             else

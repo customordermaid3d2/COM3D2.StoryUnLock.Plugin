@@ -445,7 +445,7 @@ namespace COM3D2.StoryUnLock.Plugin
             }
 
             //maid.status.specialRelation = SpecialRelation.Married;// 되는건가?
-            maid.status.additionalRelation = AdditionalRelation.Slave;// 되는건가?
+            //maid.status.additionalRelation = AdditionalRelation.Slave;// 되는건가?
 
             //maid.status.heroineType = HeroineType.Original;// 기본, 엑스트라 , 이전 // 사용 금지.일반 메이드를 엑스트라로 하면 꼬인다. 반대도 마찬가지
             maid.status.relation = Relation.Lover;// 호감도

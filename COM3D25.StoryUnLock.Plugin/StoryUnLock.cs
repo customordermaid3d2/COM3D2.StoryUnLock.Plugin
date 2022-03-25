@@ -20,7 +20,7 @@ namespace COM3D2.StoryUnLock.Plugin
     public class MyAttribute
     {
         public const string PLAGIN_NAME = "StoryUnLock";
-        public const string PLAGIN_VERSION = "22.3.5";
+        public const string PLAGIN_VERSION = "22.3.25";
         public const string PLAGIN_FULL_NAME = "COM3D2.StoryUnLock.Plugin";
     }
 
