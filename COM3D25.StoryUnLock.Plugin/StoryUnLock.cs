@@ -206,8 +206,17 @@ namespace COM3D2.StoryUnLock.Plugin
             seleted = MaidActiveUtill.SelectionGrid(seleted);
 
             if (GUILayout.Button("All Setting")) StoryUnLockUtill.SetMaidAll(seleted);
+            if (GUILayout.Button("Status Setting")) StoryUnLockUtill.SetMaidStatus(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("YotogiClass Setting")) StoryUnLockUtill.SetMaidYotogiClass(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("JobClass Setting")) StoryUnLockUtill.SetMaidJobClass(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("Skill Setting")) StoryUnLockUtill.SetMaidSkill(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("Slave Setting")) StoryUnLockKs.SetSlaveStockMaid(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("Married Setting")) StoryUnLockKs.SetMarriedStockMaid(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("PMD Setting")) StoryUnLockKs.SetPMDStockMaid(MaidActiveUtill.GetMaid(seleted));
             if (GUILayout.Button("Main Story")) StoryUnLockUtill.SetMaidMainStory(seleted);
             if (GUILayout.Button("Main Voice Pitch rnd")) StoryUnLockUtill.SetVoicePitch(seleted);
+            if (GUILayout.Button("Fix Yotogi Skills")) StoryUnLockUtill.FixYotogiSkills(MaidActiveUtill.GetMaid(seleted));
+            if (GUILayout.Button("Fix Yotogi Skills2")) StoryUnLockUtill.FixYotogiSkills2(MaidActiveUtill.GetMaid(seleted));
             //if (GUILayout.Button("Main Voice Pitch rnd")) StoryUnLockUtill.SetVoicePitch(seleted);
 
 

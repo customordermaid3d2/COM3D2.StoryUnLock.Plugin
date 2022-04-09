@@ -379,6 +379,37 @@ namespace COM3D2.StoryUnLock.Plugin
             #endregion
         }
 
+        public static void FixYotogiSkills(Maid maid)
+        {
+            if (maid == null || maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
+                return;
+
+            foreach (int num in maid.status.yotogiSkill.datas.GetKeyArray())
+            {
+                Skill.Data data = Skill.Get(num);
+                if (!data.IsExecPersonal(maid.status.personal))
+                {
+                    StoryUnLock.Log.LogDebug($"Remove , {data.id} , {data.name}");
+                    maid.status.yotogiSkill.Remove(num);
+                }
+            }
+        }
+        public static void FixYotogiSkills2(Maid maid)
+        {
+            if (maid == null || maid.status.heroineType == HeroineType.Sub || maid.boNPC || maid.boMAN)
+                return;
+
+            foreach (YotogiSkillData yotogiSkillData in maid.status.yotogiSkill.datas.GetValueArray())
+            {
+                YotogiClass.Data yotogi_class = yotogiSkillData.data.getcondition_data.yotogi_class;
+                if (yotogi_class != null && !maid.status.yotogiClass.Contains(yotogi_class) && yotogi_class.learnConditions.requestContracts.Count != 0 && !yotogi_class.learnConditions.requestContracts.Contains(maid.status.contract))
+                {
+                    StoryUnLock.Log.LogDebug($"Remove , {yotogiSkillData.id} , {yotogiSkillData.data.id} , {yotogiSkillData.data.name}");
+                    maid.status.yotogiSkill.Remove(yotogiSkillData.id);
+                }
+            }
+        }
+
         public static void SetMaidStatusAll()
         {
             StoryUnLock.Log.LogMessage("MaidStatusUtill.SetMaidStatusAll. start");
@@ -391,7 +422,7 @@ namespace COM3D2.StoryUnLock.Plugin
             StoryUnLock.Log.LogMessage("MaidStatusUtill.SetMaidStatusAll. end");
         }
 
-        internal static void SetMaidAll(int seleted)
+        public static void SetMaidAll(int seleted)
         {
             Maid maid = MaidActiveUtill.GetMaid(seleted);
 
