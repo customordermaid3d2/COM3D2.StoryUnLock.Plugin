@@ -245,6 +245,9 @@ namespace COM3D2.StoryUnLock.Plugin
             GUI.enabled = btnLock.Value;
             if (GUILayout.Button("Scenario Event End")) StoryUnLockUtill.ScenarioPlayAll();
             if (GUILayout.Button("Scenario Event End reset")) StoryUnLockUtill.SetScenarioDataAllReset();
+            if (GUILayout.Button("Trainee to rnd")) StoryUnLockUtill.SetTraineeToRnd();
+            if (GUILayout.Button("Trainee to Exclusive")) StoryUnLockUtill.SetTraineeToExclusive();
+            if (GUILayout.Button("Trainee to Free")) StoryUnLockUtill.SetTraineeToFree();
 
             GUILayout.Label("All Maid Flag Remove");
             //if (GUILayout.Button("Remove ErrFlag")) StoryUnLockUtill.RemoveErrFlagAll();

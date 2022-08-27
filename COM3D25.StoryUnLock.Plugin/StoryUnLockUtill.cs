@@ -8,12 +8,11 @@ using PlayerStatus;
 using Schedule;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using wf;
 using Yotogis;
+
 
 namespace COM3D2.StoryUnLock.Plugin
 {
@@ -106,6 +105,41 @@ namespace COM3D2.StoryUnLock.Plugin
 
 
         //static bool isRunSetScenarioDataAll = false;
+
+        internal static void SetTraineeToRnd()
+        {
+            foreach (Maid maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                if (maid.status.contract==Contract.Trainee)
+                {
+                    maid.status.contract=(MaidStatus.Contract)UnityEngine.Random.Range(1,2);               
+
+                }
+            }
+        }
+        internal static void SetTraineeToExclusive()
+        {
+            foreach (Maid maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                if (maid.status.contract==Contract.Trainee)
+                {
+                    maid.status.contract= Contract.Exclusive;               
+
+                }
+            }
+        }
+        
+        internal static void SetTraineeToFree()
+        {
+            foreach (Maid maid in GameMain.Instance.CharacterMgr.GetStockMaidList())
+            {
+                if (maid.status.contract==Contract.Trainee)
+                {
+                    maid.status.contract= Contract.Free;               
+
+                }
+            }
+        }
 
         internal static void SetScenarioDataAllReset()
         {
