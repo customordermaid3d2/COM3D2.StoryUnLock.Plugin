@@ -222,7 +222,7 @@ namespace COM3D2.StoryUnLock.Plugin
 
             GUILayout.Label("메이드 고용시");
             if (GUILayout.Button("Maid personal Random " + personalRandom.Value)) personalRandom.Value = !personalRandom.Value;
-            if (GUILayout.Button("Maid cheat rnd " + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
+            if (GUILayout.Button("Maid cheat" + statusAuto.Value)) statusAuto.Value = !statusAuto.Value;
             if (GUILayout.Button("Maid VoicePitch rnd " + VoicePitch.Value)) VoicePitch.Value = !VoicePitch.Value;
 
             GUILayout.Label("메이드 에딧 종료시 이벤트");
